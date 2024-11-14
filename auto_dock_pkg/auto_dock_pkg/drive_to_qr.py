@@ -3,6 +3,7 @@
 from autonomous_docking_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
+import time
 
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
@@ -64,6 +65,7 @@ class DriveToQr(Node):
         self.lidar_msg = None
 
         self.node_state = True
+        self.time_start = time.time()
 
 
     def stop_node(self):
@@ -81,6 +83,19 @@ class DriveToQr(Node):
         
     def listener_callback(self, msg):
         if self.node_state == False:
+            return
+        
+        if time.time() - self.time_start > 60.0:
+            self.controller.stop()
+
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'drive_to_qr'
+            msg_dock_feedback.success = False
+            msg_dock_feedback.reason = 'time_out'
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
             return
         
         if self.state:

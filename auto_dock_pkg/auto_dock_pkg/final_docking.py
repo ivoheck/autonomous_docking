@@ -10,6 +10,7 @@ from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 from custom_interfaces.msg import DockTrigger
 from custom_interfaces.msg import DockFeedback
+import time
 
 class FinalDocking(Node):
     def __init__(self):
@@ -54,6 +55,7 @@ class FinalDocking(Node):
     def start_node(self):
         #self.get_logger().info('start final_docking_node')
         self.node_state = True
+        self.time_start = time.time()
         self.timer = self.create_timer(0.1, self.docking)
 
     def stop_node(self):
@@ -82,6 +84,19 @@ class FinalDocking(Node):
         self.lidar_ranges = msg.ranges
 
     def docking(self):
+        if time.time() - self.time_start > 20.0:
+            self.controller.stop()
+
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'final_docking'
+            msg_dock_feedback.success = False
+            msg_dock_feedback.reason = 'time_out'
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
+            return
+        
         lidar_front = self.lidar_ranges[0]
 
         self.lidar_list.append(lidar_front)

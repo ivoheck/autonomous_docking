@@ -55,8 +55,7 @@ class FindQr(Node):
         self.subscription
 
         self.state = True
-        self.time_state = True
-        self.time_start = None
+        self.time_start = time.time()
         self.qr_state = False
         self.last_direction = None
 
@@ -77,10 +76,6 @@ class FindQr(Node):
     def listener_callback(self, msg):
         if self.node_state == False:
             return
-        
-        if self.time_state:
-            self.time_start = time.time()
-            self.time_state = False
 
         if time.time() - self.time_start > 60.0 and self.qr_state == False:#60
             self.controller.stop()

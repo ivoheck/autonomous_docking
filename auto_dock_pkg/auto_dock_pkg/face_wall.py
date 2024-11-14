@@ -12,6 +12,7 @@ from rclpy.qos import ReliabilityPolicy, QoSProfile
 from custom_interfaces.msg import DockTrigger
 from custom_interfaces.msg import DockFeedback
 import math
+import time
 
 
 #27,8 - 29,3
@@ -59,6 +60,7 @@ class FaceWall(Node):
     def start_node(self):
         #self.get_logger().info('start face_wall_node')
         self.node_state = True
+        self.time_start = time.time()
 
     def stop_node(self):
         #self.get_logger().info('stop face_wall_node')
@@ -66,6 +68,19 @@ class FaceWall(Node):
         
     def listener_callback(self, msg):
         if self.node_state == False:
+            return
+        
+        if time.time() - self.time_start > 60.0:
+            self.controller.stop()
+
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'face_wall'
+            msg_dock_feedback.success = False
+            msg_dock_feedback.reason = 'time_out'
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
             return
         
         #TODO: evtl mehr datenpunkte nehmen und toleranz abhängig von der front range machen

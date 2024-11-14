@@ -92,13 +92,17 @@ class GlobalPlaner(Node):
         if self.current_state == 'docking_fail':
             self.get_logger().info('Docking to workspace faild trying again...')
 
-            if self.get_parameter(f'{self.current_dock_goal}.docking').value:
-                if self.current_dock_goal is not None:
-                    self.start_docking(self.current_dock_goal)
-                    self.current_state = 'docking'
-                    self.get_logger().info('Start docking')
-                else:
-                    self.get_logger().info('Dock Recovery failed')
+
+            #TODO: hier muss vorher noch navigiert werden
+            if self.current_dock_goal is not None:
+                nav_goal_pose = self.get_nav_goal_pos(self.current_dock_goal)
+                self.set_navigation_goal(nav_goal_pose,self.current_dock_goal)
+
+                self.start_docking(self.current_dock_goal)
+                self.current_state = 'docking'
+                self.get_logger().info('Start docking')
+            else:
+                self.get_logger().info('Dock Recovery failed')
 
 
         
@@ -236,19 +240,11 @@ def main(args=None):
     rclpy.init(args=args)
 
     global_planer = GlobalPlaner()
-    executor = rclpy.executors.SingleThreadedExecutor()
-    executor.add_node(global_planer)
 
-    try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Ensure that the shutdown happens only if the context was initialized
-        if rclpy.ok():
-            executor.shutdown()
-            global_planer.destroy_node()
-            rclpy.shutdown()
+    rclpy.spin(global_planer)
+    
+    global_planer.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

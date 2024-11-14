@@ -11,6 +11,7 @@ from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 from custom_interfaces.msg import DockTrigger
 from custom_interfaces.msg import DockFeedback
+import time
 
 
 class DriveToWall(Node):
@@ -47,6 +48,7 @@ class DriveToWall(Node):
     def start_node(self):
         #self.get_logger().info('start drive_to_wall_node')
         self.node_state = True
+        self.time_start = time.time()
 
     def stop_node(self):
         #self.get_logger().info('stop drive_to_wall_node')
@@ -54,6 +56,19 @@ class DriveToWall(Node):
         
     def listener_callback(self, msg):
         if self.node_state == False:
+            return
+
+        if time.time() - self.time_start > 10.0:
+            self.controller.stop()
+
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'drive_to_wall'
+            msg_dock_feedback.success = False
+            msg_dock_feedback.reason = 'time_out'
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
             return
 
         front = msg.ranges[0]

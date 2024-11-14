@@ -11,6 +11,7 @@ from rclpy.qos import ReliabilityPolicy, QoSProfile
 from math import inf
 from custom_interfaces.msg import DockTrigger
 from custom_interfaces.msg import DockFeedback
+import time
 
 class CenterQr(Node):
     def __init__(self):
@@ -60,6 +61,7 @@ class CenterQr(Node):
     def start_node(self):
         #self.get_logger().info('start qr_center_node')
         self.node_state = True
+        self.time_start = time.time()
 
     def stop_node(self):
         #self.get_logger().info('stop qr_center_node')
@@ -67,6 +69,19 @@ class CenterQr(Node):
 
     def listener_callback_lidar(self, msg):
         if self.node_state == False:
+            return
+
+        if time.time() - self.time_start > 60.0:
+            self.controller.stop()
+
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'qr_center'
+            msg_dock_feedback.success = False
+            msg_dock_feedback.reason = 'time_out'
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
             return
         
         if msg.ranges[0] != inf:
