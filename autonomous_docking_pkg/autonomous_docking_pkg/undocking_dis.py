@@ -7,6 +7,9 @@ from std_msgs.msg import Bool
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 from std_msgs.msg import String
+from math import inf
+
+#0.14 bis chassi
 
 class Undock(Node):
 
@@ -14,8 +17,6 @@ class Undock(Node):
         super().__init__('undock')
         self.controller = motor_controller.MotorControllerHelper()
         self.publisher_lock = self.create_publisher(Bool, '/lock', 1)
-        self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
-        self.publisher_current_ws = self.create_publisher(String, '/current_ws', 1)
 
         self.subscription = self.create_subscription(
             LaserScan,
@@ -24,49 +25,28 @@ class Undock(Node):
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
         self.subscription  # prevent unused variable warning
         self.lidar_front = None
-
-        self.subscription_start_undocking = self.create_subscription(
-            Bool,
-            '/start_undock',
-            self.listener_callback_start_undocking,
-            1)
-        self.subscription_start_undocking  # prevent unused variable warning
+        self.status = 0
+        self.lidar_offset = 0.14
 
         #Zum manulellen undocking
         if __name__ == '__main__':
             self.open_lock()
             self.timer = self.create_timer(0.1, self.start_undock)
 
-    def listener_callback_start_undocking(self,msg):
-        if msg.data:
-            self.open_lock()
-            self.timer = self.create_timer(0.1, self.start_undock)
-
     def start_undock(self):
-        msg = String()
-        msg.data = 'undocking'
-        self.publisher_current_state.publish(msg)
-        
-        if self.lidar_front is not None and self.lidar_front < 0.3:
-            self.controller.back(10.0)
+        print(self.lidar_front)
+        if self.lidar_front is None or self.lidar_front == inf:
+            return
 
-        elif self.lidar_front is None:
-            self.controller.stop()
-
-        else:
+        if self.lidar_front > 0.7 + self.lidar_offset:
+            print('final: ',self.lidar_front - self.lidar_offset)
             self.controller.stop()
             self.close_lock()
-
-            msg_state = String()
-            msg_state.data = 'undocked'
-            self.publisher_current_state.publish(msg_state)
-
-            msg_ws = String()
-            msg_ws.data = 'no_ws'
-            self.publisher_current_ws.publish(msg_ws)
-
             self.timer.destroy()
-            #rclpy.shutdown()
+            
+        else:
+            self.controller.back(10.0)
+
 
     def listener_callback(self,msg):
         self.lidar_front = msg.ranges[0]

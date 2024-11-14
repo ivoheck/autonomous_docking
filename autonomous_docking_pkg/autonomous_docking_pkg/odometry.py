@@ -19,10 +19,6 @@ class OdometryPublisher(Node):
 
     def __init__(self):
         super().__init__('odometry_publisher')
-        #LLM
-        self.tf_broadcaster = TransformBroadcaster(self)
-        #LLM
-
         self.refresh_rate = 10 #30
 
         self.twist = None
@@ -34,14 +30,14 @@ class OdometryPublisher(Node):
             Twist,
             '/encoder',
             self.listener_callback_encoder,
-            10)
+            1)
         self.subscription_cmd_vel  # prevent unused variable warning
 
         self.subscription_pose_correction = self.create_subscription(
             PoseWithCovarianceStamped,
             '/pose',
             self.correct_odom,
-            10)
+            1)
         self.subscription_cmd_vel  # prevent unused variable warning
 
         self.publisher_ = self.create_publisher(Odometry, '/odom', 10)
@@ -49,6 +45,7 @@ class OdometryPublisher(Node):
         self.timer = self.create_timer(1/self.refresh_rate, self.odom_callback)
 
     def correct_odom(self, msg):
+        return
         orientation = msg.pose.pose.orientation 
         rotation = [orientation.x,orientation.y,orientation.z,orientation.w]
         rotation = R.from_quat(rotation)
@@ -110,27 +107,11 @@ class OdometryPublisher(Node):
         odometry_msg.header.stamp = current_time
         self.publisher_.publish(odometry_msg)
 
-        t = TransformStamped()
-        t.header.stamp = current_time
-        t.header.frame_id = "odom"
-        t.child_frame_id = "base_link" #base_link"
-        t.transform.translation.x = odometry_msg.pose.pose.position.x
-        t.transform.translation.y = odometry_msg.pose.pose.position.y
-        t.transform.translation.z = odometry_msg.pose.pose.position.z
-        t.transform.rotation = odometry_msg.pose.pose.orientation
-        self.tf_broadcaster.sendTransform(t)
-        #LLM
 
 def main(args=None):
     rclpy.init(args=args)
-
     odometry_publisher = OdometryPublisher()
-
     rclpy.spin(odometry_publisher)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
     odometry_publisher.destroy_node()
     rclpy.shutdown()
 

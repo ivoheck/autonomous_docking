@@ -10,8 +10,22 @@ from launch.event_handlers import (OnExecutionComplete, OnProcessExit,
                                 OnProcessIO, OnProcessStart, OnShutdown)
 from launch import LaunchDescription
 from launch.events import Shutdown
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
+    ws_nr = LaunchConfiguration('ws_nr')
+
+    ws_nr_launch_arg = DeclareLaunchArgument(
+        'ws_nr',
+        default_value='ws_1'
+        )
+    
+    qr_scan_node = Node(
+            package='autonomous_docking_pkg',
+            executable='qr_scan_node',
+            parameters=[{'ws_nr': ws_nr}]
+        )
+
     find_qr_node = Node(
             package='autonomous_docking_pkg',
             executable='find_qr_node',
@@ -46,14 +60,10 @@ def generate_launch_description():
             package='autonomous_docking_pkg',
             executable='probe_docking_service_node',
         )
-    
-    qr_center_scan_node = Node(
-            package='autonomous_docking_pkg',
-            executable='qr_center_scan_node',
-        )
 
     return LaunchDescription([
-        qr_center_scan_node,
+        ws_nr_launch_arg,
+        qr_scan_node,
         find_qr_node,
 
         RegisterEventHandler(

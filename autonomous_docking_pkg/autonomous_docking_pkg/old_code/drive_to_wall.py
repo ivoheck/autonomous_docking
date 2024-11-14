@@ -29,8 +29,11 @@ class DriveToWall(Node):
         front = msg.ranges[0]
         print(front)
         
-        if front >= 0.25:
+        if front >= 0.3:
             self.controller.front(percent=10.0)
+
+        elif front <= 0.25:
+            self.controller.back(percent=5.0)
         
         else:
             self.controller.stop()

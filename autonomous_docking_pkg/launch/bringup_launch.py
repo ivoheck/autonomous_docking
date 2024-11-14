@@ -19,19 +19,19 @@ def generate_launch_description():
         executable='odometry_publisher_node',
     )
 
-    probe_node = Node(
+    lock_controller_node = Node(
             package='autonomous_docking_pkg',
-            executable='probe_node',
-        )
-    
-    start_docking_node = Node(
-            package='autonomous_docking_pkg',
-            executable='start_docking_node',
+            executable='lock_controller_node',
         )
     
     lidar_fillter_node = Node(
             package='autonomous_docking_pkg',
             executable='lidar_fillter_node'
+    )
+
+    undocking_node = Node(
+        package='autonomous_docking_pkg',
+        executable='undocking_node'
     )
     
     sllidar_launch = IncludeLaunchDescription(
@@ -42,12 +42,17 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([FindPackageShare('cube_bot_description'), '/launch/display.launch.py'])
     )
 
+    docking_bringup_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([FindPackageShare('auto_dock_pkg'), '/launch/auto_dock_bringup_launch.py'])
+    )
+
     return LaunchDescription([
         motor_controller_node,
         cube_bot_description_launch,
         odometry_publisher_node,
-        probe_node,
         sllidar_launch,
         lidar_fillter_node,
-        start_docking_node,
+        lock_controller_node,
+        undocking_node,
+        docking_bringup_launch
     ])

@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'global_manager_pkg'
+package_name = 'auto_dock_pkg'
 
 setup(
     name=package_name,
@@ -11,11 +11,8 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', [
-            'launch/global_planer_launch.py',
-            'launch/global_navigation_launch.py', 
+            'launch/auto_dock_bringup_launch.py',
         ]),
-        ('share/' + package_name + '/config', ['config/workplace.yaml']),
-        
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,9 +23,14 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            f'global_planer_node = {package_name}.global_planer:main',
-            f'nav2_start_node = {package_name}.nav2_start:main',
-            f'path_follower_node = {package_name}.path_follower:main'
+            f'find_qr_node = {package_name}.find_qr:main',
+            f'drive_to_qr_node = {package_name}.drive_to_qr:main',
+            f'qr_scan_node = {package_name}.qr_scan:main',
+            f'face_wall_node = {package_name}.face_wall:main',
+            f'drive_to_wall_node = {package_name}.drive_to_wall:main',
+            f'qr_center_node = {package_name}.qr_center:main',
+            f'final_docking_node = {package_name}.final_docking:main',
+            f'docking_manager_node = {package_name}.docking_manager:main',
         ],
     },
 )

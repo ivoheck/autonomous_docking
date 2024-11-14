@@ -26,17 +26,20 @@ class MotorController(Node):
             '/cmd_vel',
             self.listener_callback_twist,
             10)
-        self.subscription_twist  # prevent unused variable warning
+        self.subscription_twist
 
         self.publisher_enconder = self.create_publisher(Twist, '/encoder', 1)
+
+        self.wheel_size = 0.074 #durchmesser in meter
+        self.max_speed_ms = (self.wheel_size * math.pi) * 1 #maximal eine umdreung pro sekunde
 
         self.serial = serial.Serial('/dev/usb_serial_arduino_mega', 9600) #udev regel für arduino mega
 
     def callc_encoder(self,p_front_left,p_front_right,p_back_left,p_back_right):
-        front_left = (p_front_left/100) * 0.085
-        front_right = (p_front_right/100) * 0.085
-        back_left = (p_back_left/100) * 0.085
-        back_right = (p_back_right/100) * 0.085
+        front_left = (p_front_left/100) * self.max_speed_ms
+        front_right = (p_front_right/100) * self.max_speed_ms
+        back_left = (p_back_left/100) * self.max_speed_ms
+        back_right = (p_back_right/100) * self.max_speed_ms
 
         WHEEL_GEOMETRY = 0.291
         
@@ -104,10 +107,10 @@ class MotorController(Node):
         return front_left ,front_right ,back_left ,back_right 
 
     def callc_percent(self,front_left,front_right,back_left,back_right):
-        p_front_left = int((front_left/0.085)*100)
-        p_front_right = int((front_right/0.085)*100)
-        p_back_left = int((back_left/0.085)*100)
-        p_back_right = int((back_right/0.085)*100)
+        p_front_left = int((front_left/self.max_speed_ms)*100)
+        p_front_right = int((front_right/self.max_speed_ms)*100)
+        p_back_left = int((back_left/self.max_speed_ms)*100)
+        p_back_right = int((back_right/self.max_speed_ms)*100)
 
         max_v = max(abs(p_front_left),abs(p_front_right),abs(p_back_left),abs(p_back_right))
         if max_v > 100:
@@ -125,49 +128,53 @@ class MotorController(Node):
 
         self.callc_encoder(p_front_left,p_front_right,p_back_left,p_back_right)
 
-#TODO: für mehr prozentstufen die zahlen berechnen für mehr genauigkeit
 class MotorControllerHelper(Node):
     def __init__(self):
         super().__init__('motor_controller_helper')
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 1)
+
+        WHEEL_GEOMETRY = 0.291
+        self.wheel_size = 0.074 #durchmesser in meter
+        self.max_speed_ms = (self.wheel_size * math.pi) * 1 #maximal eine umdreung pro sekunde
+        self.max_seeed_rotation_rs = (4 * self.max_speed_ms) / (4 * WHEEL_GEOMETRY)
 
     def callculate_linear_movement():
         pass
         
     def front(self,percent):
         msg = Twist()
-        msg.linear.x = 0.085*(percent/100)
+        msg.linear.x = self.max_speed_ms *(percent/100)
         self.publisher_.publish(msg)
 
     def back(self,percent):
         msg = Twist()
-        msg.linear.x = -(0.085*(percent/100))
+        msg.linear.x = -(self.max_speed_ms*(percent/100))
         self.publisher_.publish(msg)
 
     def left(self,percent):
         msg = Twist()
-        msg.linear.y = 0.085*(percent/100)
+        msg.linear.y = self.max_speed_ms*(percent/100)
         self.publisher_.publish(msg)
 
     def right(self,percent):
         msg = Twist()
-        msg.linear.y = -(0.085*(percent/100))
+        msg.linear.y = -(self.max_speed_ms*(percent/100))
         self.publisher_.publish(msg)
 
     def turn_right(self,percent):
         msg = Twist()
-        msg.angular.z = -(0.3035355212505*(percent/100))
+        msg.angular.z = -(self.max_seeed_rotation_rs*(percent/100))
         self.publisher_.publish(msg)
 
     def turn_left(self,percent):
         msg = Twist()
-        msg.angular.z = 0.3035355212505*(percent/100)
+        msg.angular.z = self.max_seeed_rotation_rs*(percent/100)
         self.publisher_.publish(msg)
 
     def drive_curve(self,direction,percent_x,percent_z):
         msg = Twist()
-        msg.angular.z = 0.3035355212505*((percent_z * direction)/100)
-        msg.linear.x = 0.085*(percent_x/100)
+        msg.angular.z = self.max_seeed_rotation_rs*((percent_z * direction)/100)
+        msg.linear.x = self.max_speed_ms*(percent_x/100)
         self.publisher_.publish(msg)
 
     def stop(self):

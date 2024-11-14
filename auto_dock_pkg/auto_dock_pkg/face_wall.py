@@ -1,17 +1,16 @@
 #https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
 #https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
-
 #subscriber KLasse https://docs.ros.org/en/kinetic/api/rospy/html/rospy.topics.Subscriber-class.html
 
 
 from autonomous_docking_pkg import motor_controller
-
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
-
+from custom_interfaces.msg import DockTrigger
+from custom_interfaces.msg import DockFeedback
 import math
 
 
@@ -27,17 +26,48 @@ class FaceWall(Node):
             self.listener_callback,
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
         self.subscription  # prevent unused variable warning
+
+        self.subscription_node_state = self.create_subscription(
+            DockTrigger,
+            'trigger_dock_node/face_wall_node',
+            self.listener_callback_manage_node_state,
+            1)
+        self.subscription_node_state
+
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.publisher_node_state = self.create_publisher(DockFeedback, '/dock_feedback', 1)
         self.tolerance = 0.001
         #self.front_limit = 0.1
         self.state = True
         #Diese variable wird zum kallibriren den Lidar sensors verwendet
         self.lidar_offset = 0.0008181821216236461
         self.check = 0
-        self.checks = 3
+        self.checks = 0
         self.controller = motor_controller.MotorControllerHelper()
+
+        self.dock_time = None
+        self.node_state = False
+
+
+    def listener_callback_manage_node_state(self, msg):
+        if msg.trigger:
+            self.start_node()
+            self.dock_time = msg.time
+        else:
+            self.stop_node()
+
+    def start_node(self):
+        #self.get_logger().info('start face_wall_node')
+        self.node_state = True
+
+    def stop_node(self):
+        #self.get_logger().info('stop face_wall_node')
+        self.node_state = False
         
     def listener_callback(self, msg):
+        if self.node_state == False:
+            return
+        
         #TODO: evtl mehr datenpunkte nehmen und toleranz abhängig von der front range machen
         front = msg.ranges[0]
         l_1, l_2, l_6, l_7, l_11 = msg.ranges[1], msg.ranges[2], msg.ranges[6], msg.ranges[7], msg.ranges[11]
@@ -56,76 +86,31 @@ class FaceWall(Node):
 
         if abs(diff) < self.tolerance:
             self.controller.stop()
-            if self.check >= self.checks:
-                rclpy.shutdown()
-                return
-            else:
-                self.check += 1
-                return 
-            #TODO: nach dem stoppen nochmal waren und nochmal überprüfen
-            #TODO: an die mauer ran fahren evtl mit nochmal koriktur bewegungen
-            #self.state = False
-            #if front <= self.front_limit:
-            #    self.stop()
-            #else:
-            #    self.front(speed=0.05)
-            #self.timer = self.create_timer(1, self.timer_callback)
+            
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'face_wall'
+            msg_dock_feedback.success = True
+            
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
 
         else:
             if diff > 0:
-                self.controller.turn_right(percent=5.0)
-                #time.sleep(0.1)
+                self.controller.turn_right(percent=3.0)
             else:
-                self.controller.turn_left(percent=5.0)
-                #time.sleep(0.1)
+                self.controller.turn_left(percent=3.0)
                 
-
-        #TODO: dynamisch den turn speed je nach abweichung machen
-        #TODO: bei dem richtigen roboter währe es gut ein fedback loop zu haben der bescheid sagt wenn eine bestimmte bewegungs operation abgeschlossen ist
-        #TODO: man müsste quasi einen weiteren subscriber für die bewegungs steuerung haben
-
-    def turn_left(self,speed):
-        print('left')
-        msg = Twist()
-        msg.angular.z = speed
-        self.publisher_.publish(msg)
-
-    def turn_right(self,speed):
-        print('rigth')
-        msg = Twist()
-        msg.angular.z = -(speed)
-        self.publisher_.publish(msg)
-
-    def front(self,speed):
-        print('front')
-        msg = Twist()
-        msg.linear.x = speed
-        self.publisher_.publish(msg)
-
-    def stop(self):
-        print('stop')
-        msg = Twist()
-        msg.angular.z = 0.0
-        self.publisher_.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)
 
     face_wall = FaceWall()
 
-    executor = rclpy.executors.SingleThreadedExecutor()
-    executor.add_node(face_wall)
+    rclpy.spin(face_wall)
     
-    try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Ensure that the shutdown happens only if the context was initialized
-        if rclpy.ok():
-            executor.shutdown()
-            face_wall.destroy_node()
-            rclpy.shutdown()
+    face_wall.destroy_node()
+    rclpy.shutdown()
 
 
 if __name__ == '__main__':

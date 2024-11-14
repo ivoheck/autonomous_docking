@@ -15,7 +15,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', [
             'launch/bringup_launch.py',
-            'launch/autonomous_docking_launch.py', 
+            'launch/autonomous_docking_launch.py',
+            'launch/test_launch.py', 
         ]),
     ],
     install_requires=['setuptools'],
@@ -35,7 +36,7 @@ setup(
             f'scan_drive_to_qr_node = {package_name}.scan_drive_to_qr:main',
             f'face_wall_node = {package_name}.face_wall:main',
             f'drive_to_wall_node = {package_name}.drive_to_wall:main',
-            f'qr_center_scan_node = {package_name}.qr_center_scan:main',
+            f'qr_scan_node = {package_name}.qr_scan:main',
             f'qr_center_node = {package_name}.qr_center:main',
             f'scan_find_qr_node = {package_name}.scan_find_qr:main',
             f'find_qr_node = {package_name}.find_qr:main',
@@ -46,7 +47,8 @@ setup(
             f'lidar_fillter_node = {package_name}.lidar_fillter:main',
             f'lock_controller_node = {package_name}.lock_controller:main',
             f'undock_node = {package_name}.undock:main',
-            f'start_docking_node = {package_name}.start_docking:main'
+            f'start_docking_node = {package_name}.start_docking:main',
+            f'undocking_node = {package_name}.undocking:main',
         ],
     },
 )

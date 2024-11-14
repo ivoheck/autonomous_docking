@@ -5,11 +5,13 @@ import rclpy
 from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import LaserScan
+from custom_interfaces.msg import QrPos
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 
-
+#TODO: immer losfahren am anfang
+#TODO: direktion merken und dann in die richtung
+#TODO: mehr drehen
 class DriveToQr(Node):
     def __init__(self):
         super().__init__('drive_to_qr')
@@ -17,18 +19,13 @@ class DriveToQr(Node):
         self.lidar_msg = None
 
         self.subscription = self.create_subscription(
-            Float32MultiArray,
+            QrPos,
             '/qr_pos',
             self.listener_callback,
             10)
         
         self.subscription  # prevent unused variable warning
-        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.foundQr = False
-        self.controller = motor_controller.MotorControllerHelper()
-
-    #TODO: das vieleicht in einen service packen
-    def get_lidar(self):
+        
         self.lidar_subscription = self.create_subscription(
             LaserScan,
             '/scan',
@@ -36,14 +33,21 @@ class DriveToQr(Node):
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
         
         self.lidar_subscription
+        
+        self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.foundQr = False
+        self.controller = motor_controller.MotorControllerHelper()
+        self.state = True
 
     def lidar_callback(self,msg):
         self.lidar_msg = msg
-        self.destroy_subscription(self.lidar_subscription)
         
     def listener_callback(self, msg):
-        self.get_lidar()
-        #TODO: das muss besser gemacht werden evtl mit nem service oder so
+        if self.state:
+            self.state = False
+            self.controller.front(5.0)
+
+        #self.get_logger().info(str(msg))
         if self.lidar_msg is not None:
             front_dist = self.lidar_msg.ranges[0]
             if front_dist <= 0.3:
@@ -51,15 +55,17 @@ class DriveToQr(Node):
                 self.get_logger().info('Facing wall')
                 rclpy.shutdown()
                 return
+            
+            #self.get_logger().info(str(front_dist))
 
-        direction,dif = msg.data[0],msg.data[1]
+        direction,offset = msg.direction,msg.offset
         if direction != 0.0:
             self.foundQr = True
-            if dif <= self.tollerace:
+            if offset <= self.tollerace:
                 self.controller.front(20.0)
 
-            elif dif > self.tollerace:
-                self.controller.drive_curve(direction=direction,percent_x=20.0,percent_z=3.0)
+            elif offset > self.tollerace:
+                self.controller.drive_curve(direction=direction,percent_x=20.0,percent_z=6.0)
 
         else:
             if self.foundQr and self.lidar_msg is not None:
@@ -70,9 +76,9 @@ class DriveToQr(Node):
                     self.get_logger().info('Facing wall')
                     rclpy.shutdown()
 
-            else:
-                #Wenn nie ein QR code gefunden wurde
-                self.controller.stop()
+            #else:
+            #    #Wenn nie ein QR code gefunden wurde
+            #    self.controller.stop()
 
 
 def main(args=None):

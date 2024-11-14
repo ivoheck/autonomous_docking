@@ -15,36 +15,44 @@ from launch.substitutions import (EnvironmentVariable, FindExecutable,
                                 PythonExpression)
 
 def generate_launch_description():
-    first_node = Node(
-            package='autonomous_docking_pkg',
-            executable='my_node',
+    ws_nr = LaunchConfiguration('ws_nr')
+
+    ws_nr_launch_arg = DeclareLaunchArgument(
+        'ws_nr',
+        default_value='ws_1'
         )
-    second_node = Node(
+    
+    qr_scan_node = Node(
             package='autonomous_docking_pkg',
-            executable='my_node2',
+            executable='qr_scan_node',
+            parameters=[{'ws_nr': ws_nr}]
         )
 
-    next_node = Node(
+    find_qr_node = Node(
             package='autonomous_docking_pkg',
-            executable='my_node3',
+            executable='find_qr_node',
         )
+    
+    drive_to_qr_node = Node(
+            package='autonomous_docking_pkg',
+            executable='drive_to_qr_node',
+        )
+    
     return LaunchDescription([
-        first_node,
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=first_node,
-                on_exit=[
-                    second_node,
-                ]
-            )
-        ),
+        qr_scan_node,
+        find_qr_node,
 
         RegisterEventHandler(
             OnProcessExit(
-                target_action=second_node,
+                target_action=find_qr_node,
                 on_exit=[
-                    next_node,
+                    handle_node_exit(0,drive_to_qr_node),
                 ]
             )
         ),
     ])
+
+
+def handle_node_exit(returncode,node):
+    if returncode == 0:
+        node

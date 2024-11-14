@@ -7,6 +7,8 @@ from std_msgs.msg import Bool
 from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 from std_msgs.msg import String
+from custom_interfaces.msg import QrPos
+import time
 
 class Undock(Node):
 
@@ -17,6 +19,8 @@ class Undock(Node):
         self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
         self.publisher_current_ws = self.create_publisher(String, '/current_ws', 1)
 
+        self.status = True
+
         self.subscription = self.create_subscription(
             LaserScan,
             '/scan',
@@ -24,6 +28,16 @@ class Undock(Node):
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
         self.subscription  # prevent unused variable warning
         self.lidar_front = None
+
+        self.subscription_qr_pos = self.create_subscription(
+            QrPos,
+            '/qr_pos',
+            self.listener_callback_qr_pos,
+            1)
+        
+        self.subscription_qr_pos
+        self.qr_pos = None
+        self.qr_pos_final = None
 
         self.subscription_start_undocking = self.create_subscription(
             Bool,
@@ -46,8 +60,18 @@ class Undock(Node):
         msg = String()
         msg.data = 'undocking'
         self.publisher_current_state.publish(msg)
+
+        if self.lidar_front is not None and self.lidar_front < 0.25:
+            self.controller.back(5.0)
         
-        if self.lidar_front is not None and self.lidar_front < 0.3:
+        elif self.lidar_front is not None and self.lidar_front < 0.5:
+            if self.status:
+                self.status = False
+                #self.controller.stop()
+                #time.sleep(1)
+                self.qr_pos_final = self.qr_pos
+                print(self.qr_pos_final)
+
             self.controller.back(10.0)
 
         elif self.lidar_front is None:
@@ -70,6 +94,9 @@ class Undock(Node):
 
     def listener_callback(self,msg):
         self.lidar_front = msg.ranges[0]
+
+    def listener_callback_qr_pos(self, msg):
+        self.qr_pos = msg
 
     def open_lock(self):
         msg = Bool()

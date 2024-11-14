@@ -7,6 +7,7 @@ from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import Bool
 
 
+#TODO: name ändern und fühler kram raus
 class Probe(Node):
 
     def __init__(self):
@@ -18,7 +19,7 @@ class Probe(Node):
             Bool,
             '/lock',
             self.controll_lock,
-            10)
+            1)
         self.subscription
 
         timer_period = 0.001

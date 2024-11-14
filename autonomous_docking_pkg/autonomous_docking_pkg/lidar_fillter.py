@@ -7,7 +7,6 @@ from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 import itertools
 
-#ab und zu gibt es einen errror beim starten
 class LidarFillter(Node):
 
     def __init__(self):
@@ -23,6 +22,9 @@ class LidarFillter(Node):
     def listener_callback(self,msg):
         fillterScan = LaserScan()
         ranges = msg.ranges
+
+        if len(ranges) < 647:
+            return
 
         #75 - 105, 255 - 285, 435 - 465, 615 - 645 filltern
         for i in itertools.chain(range(75,106),range(255,286),range(435,466),range(615,646)):

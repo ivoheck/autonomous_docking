@@ -1,0 +1,24 @@
+global_planer:
+  ros__parameters:
+    start_place: "ws_0"
+
+    ws_0:
+      pose:
+        x: 0.0
+        y: 0.0
+      orientation:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 1.0
+
+    ws_1:
+      docking: True
+      pose:
+        x: 0.01
+        y: -4.03
+      orientation:
+        x: 0.0
+        y: 0.0
+        z: 1.0
+        w: 0.0
