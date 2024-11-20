@@ -45,6 +45,11 @@ def generate_launch_description():
       package='auto_dock_pkg',
        executable='docking_manager_node' 
     )
+
+    undocking_node = Node(
+      package='auto_dock_pkg',
+       executable='undocking_node' 
+    )
    
     return LaunchDescription([
         find_qr_node,
@@ -55,4 +60,5 @@ def generate_launch_description():
         qr_center_node,
         final_docking_node,
         docking_manager_node,
+        undocking_node,
     ])

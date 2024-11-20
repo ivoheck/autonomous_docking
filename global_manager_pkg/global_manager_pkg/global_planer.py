@@ -15,7 +15,7 @@ import time
 
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 
-#current_state: navigation, docking, undocking, undocked, waiting
+#current_state: navigation, docking, undocking, waiting
 
 class GlobalPlaner(Node):
     def __init__(self):
@@ -79,6 +79,7 @@ class GlobalPlaner(Node):
         self.timer = self.create_timer(1, self.global_planer) 
 
     def global_planer(self):
+        self.get_logger().info(str(self.current_ws))
         #Warten auf docken
         if self.current_state == 'docking':
             self.get_logger().info('Docking to WS')
@@ -90,19 +91,20 @@ class GlobalPlaner(Node):
             return
         
         if self.current_state == 'docking_fail':
-            self.get_logger().info('Docking to workspace faild trying again...')
+            self.get_logger().info('Docking to workspace faild')
+            self.current_state = 'waiting'
 
+            #if self.current_dock_goal is not None:
+                #nav_goal_pose = self.get_nav_goal_pos(self.current_dock_goal)
+                #self.set_navigation_goal(nav_goal_pose,self.current_dock_goal)
+                #self.current_nav_goal = self.current_dock_goal
+                #self.current_state = 'navigating'
 
-            #TODO: hier muss vorher noch navigiert werden
-            if self.current_dock_goal is not None:
-                nav_goal_pose = self.get_nav_goal_pos(self.current_dock_goal)
-                self.set_navigation_goal(nav_goal_pose,self.current_dock_goal)
-
-                self.start_docking(self.current_dock_goal)
-                self.current_state = 'docking'
-                self.get_logger().info('Start docking')
-            else:
-                self.get_logger().info('Dock Recovery failed')
+                #self.start_docking(self.current_dock_goal)
+                #self.current_state = 'docking'
+                #self.get_logger().info('Start docking')
+            #else:
+                #self.get_logger().info('Dock Recovery failed')
 
 
         
@@ -116,7 +118,7 @@ class GlobalPlaner(Node):
             return
 
         #Es gibt ein goal welches noch nicht initialisiert wurde werend der roboter wartet
-        if self.current_state == 'waiting' or self.current_state == 'undocked':
+        if self.current_state == 'waiting':
             self.get_logger().info('Start new Navigation')
             nav_goal_pose = self.get_nav_goal_pos(self.current_nav_goal)
 
@@ -126,6 +128,7 @@ class GlobalPlaner(Node):
 
             res = self.set_navigation_goal(nav_goal_pose,self.current_nav_goal)
             self.current_state = 'navigating'
+            self.current_ws = 'no_ws'
 
         #Es gibt ein goal welches noch nicht initialisiert wurde wärend der roboter angedockt ist
         if self.current_state == 'docked':
@@ -153,6 +156,7 @@ class GlobalPlaner(Node):
                 
                 else:
                     self.current_state = 'waiting'
+                    self.current_ws = self.current_nav_goal
                     self.get_logger().info('waiting')
 
                 self.undeclare_parameter(f'{self.current_nav_goal}.docking')
@@ -232,6 +236,7 @@ class GlobalPlaner(Node):
         
     def callback_current_state(self,msg):
         self.current_state = msg.data
+        self.get_logger().info(str(self.current_state))
         
     def callback_current_ws(self,msg):
         self.current_ws = msg.data

@@ -30,9 +30,11 @@ class DockingManager(Node):
         self.publisher_final_docking_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/final_docking_node', 1)
         self.publisher_qr_scan_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/qr_scan_node', 1)
         self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
+        self.publisher_current_ws = self.create_publisher(String, '/current_ws', 1)
 
         self.current_dock_stamp = None
         self.current_dock_state = None
+        self.current_ws = None
 
         #self.timer = self.create_timer(1.0, self.timer_callback)
 
@@ -201,6 +203,11 @@ class DockingManager(Node):
                 msg_qr_scan = DockTrigger()
                 msg_qr_scan.trigger = False
                 self.publisher_qr_scan_node_state.publish(msg=msg_qr_scan)
+
+                msg_ws = String()
+                msg_ws.data = f'{self.current_ws}'
+                self.publisher_current_ws.publish(msg_ws)
+
                 return
 
             elif msg.success == False and msg.time == self.current_dock_stamp:

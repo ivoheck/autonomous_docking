@@ -18,6 +18,7 @@ class CenterQr(Node):
         super().__init__('center_qr')
         self.last_direction = None
         self.last_diff = None
+        self.last_qrcode = None
         self.subscription = self.create_subscription(
             QrPos,
             '/qr_pos',
@@ -51,6 +52,10 @@ class CenterQr(Node):
         self.dock_time = None
         self.node_state = False
 
+        if __name__ == '__main__':
+            print('test')
+            self.start_node()
+
     def listener_callback_manage_node_state(self, msg):
         if msg.trigger:
             self.start_node()
@@ -71,7 +76,7 @@ class CenterQr(Node):
         if self.node_state == False:
             return
 
-        if time.time() - self.time_start > 60.0:
+        if time.time() - self.time_start > 60.0:#60
             self.controller.stop()
 
             msg_dock_feedback = DockFeedback()
@@ -87,11 +92,11 @@ class CenterQr(Node):
         if msg.ranges[0] != inf:
             self.lidar_front = msg.ranges[0]
 
-        if msg.ranges[11] != inf:
-            self.lidar_left = msg.ranges[11]
+        if msg.ranges[21] != inf:
+            self.lidar_left = msg.ranges[21]
 
-        if msg.ranges[709] != inf:
-            self.lidar_right = msg.ranges[709]
+        if msg.ranges[699] != inf:
+            self.lidar_right = msg.ranges[699]
         
     def listener_callback(self, msg):
         if self.node_state == False:
@@ -112,21 +117,32 @@ class CenterQr(Node):
             self.last_qrcode = qrcode
             self.drive(direction=direction,diff=diff,qrcode=qrcode)
         else:
-            if self.last_direction is not None and self.last_diff is not None and self.last_qrcode is not None:
+            if self.lidar_front is not None and self.lidar_left is not None:
+                #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
+                #TODO das nochmal überprüfen
+                print('offset:',self.lidar_left - self.lidar_right)
+                if self.lidar_left - self.lidar_right > 0.045:
+                    self.last_direction = -1.0
+                    print('reach left side')
+                
+                elif self.lidar_left - self.lidar_right < -0.045:
+                    self.last_direction = 1.0
+                    print('reach rigth side')
+
+
+            if self.last_direction is not None:
                 self.drive(direction=self.last_direction,diff=self.last_diff,qrcode=self.last_qrcode)
+                return
 
             else:
                 #Qr-code wurde noch nie gesehen
                 if self.lidar_front is None or self.lidar_left is None:
                     return
                 
-                #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
-                if self.lidar_left - self.lidar_front > 0.045:
-                    self.last_direction = -1.0
-                
                 else:
                     #Wenn noch nichts gefunden wurde fährt der Roboter nach links
-                    self.drive(direction=1.0)
+                    print('no qr found driving left')
+                    self.drive(direction=1.0,diff=1.0,qrcode='')
 
     def drive(self,direction,diff,qrcode):
 

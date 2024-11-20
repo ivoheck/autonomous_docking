@@ -31,6 +31,7 @@ setup(
             f'qr_center_node = {package_name}.qr_center:main',
             f'final_docking_node = {package_name}.final_docking:main',
             f'docking_manager_node = {package_name}.docking_manager:main',
+            f'undocking_node = {package_name}.undocking:main',
         ],
     },
 )

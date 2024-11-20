@@ -84,7 +84,7 @@ class FinalDocking(Node):
         self.lidar_ranges = msg.ranges
 
     def docking(self):
-        if time.time() - self.time_start > 20.0:
+        if time.time() - self.time_start > 20.0:#20
             self.controller.stop()
 
             msg_dock_feedback = DockFeedback()
