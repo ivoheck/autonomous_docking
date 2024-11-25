@@ -41,17 +41,24 @@ class MotorController(Node):
         back_left = (p_back_left/100) * self.max_speed_ms
         back_right = (p_back_right/100) * self.max_speed_ms
 
-        WHEEL_GEOMETRY = 0.291
-        
-        x = (front_left + front_right + back_left + back_right) / 4
-        y = (-front_left + front_right + back_left - back_right) / 4
-        z = (-front_left + front_right - back_left + back_right) / (4*WHEEL_GEOMETRY)
+        x,y,z = self.get_platform_speed(front_left,front_right,back_left,back_right )
 
         msg = Twist()
         msg.linear.x = x
         msg.linear.y = y
         msg.angular.z = z
         self.publisher_enconder.publish(msg)
+
+    def get_platform_speed(self,front_left,front_right,back_left,back_right):
+
+        c = 0.291
+
+        # mit w als m/s
+        v_x = (1/4) * (front_left + front_right + back_left + back_right)
+        v_y = (1/4) * (-front_left + front_right + back_left - back_right)
+        v_z = (1/(4*c)) * (-front_left + front_right - back_left + back_right)
+
+        return v_x,v_y,v_z
 
     def get_sign(self,percent):
         if percent >= 0:
@@ -88,23 +95,19 @@ class MotorController(Node):
         self.serial.write(command.encode())
 
     #https://ecam-eurobot.github.io/Tutorials/software/mecanum/mecanum.html
-    #konvertiert twist massage kompnenten in die einzelnen beschleunigungen für die einzelen räder
-    def convert(self,move):
-        x = move.linear.x
-        y = move.linear.y
-        rot = move.angular.z
+    def get_wheel_speed(self,move):
+        v_x = move.linear.x
+        v_y = move.linear.y
+        v_z = move.angular.z
 
-        WHEEL_RADIUS = 0.037
-        WHEEL_GEOMETRY = 0.291 #WHEEL_GEOMETRY = (WHEEL_SEPARATION_WIDTH + WHEEL_SEPARATION_LENGTH) / 2
+        c = 0.291
 
-        front_left = (x - y - rot * WHEEL_GEOMETRY)# / WHEEL_RADIUS
-        front_right = (x + y + rot * WHEEL_GEOMETRY)# / WHEEL_RADIUS
-        back_left = (x + y - rot * WHEEL_GEOMETRY)# / WHEEL_RADIUS
-        back_right = (x - y + rot * WHEEL_GEOMETRY)# / WHEEL_RADIUS
-        #https://ecam-eurobot.github.io/Tutorials/software/mecanum/mecanum.html
-
-        #Einheit: m/s
-        return front_left ,front_right ,back_left ,back_right 
+        # w in m/s
+        front_left =  (v_x - v_y -(c)*v_z)
+        front_right =  (v_x + v_y +(c)*v_z)
+        back_left =  (v_x + v_y -(c)*v_z)
+        back_right =  (v_x - v_y +(c)*v_z)
+        return front_left,front_right,back_left,back_right
 
     def callc_percent(self,front_left,front_right,back_left,back_right):
         p_front_left = int((front_left/self.max_speed_ms)*100)
@@ -122,10 +125,9 @@ class MotorController(Node):
         return int(p_front_left),int(p_front_right),int(p_back_left),int(p_back_right)
 
     def listener_callback_twist(self, msg):
-        front_left,front_right,back_left,back_right = self.convert(msg)
+        front_left,front_right,back_left,back_right = self.get_wheel_speed(msg)
         p_front_left,p_front_right,p_back_left,p_back_right = self.callc_percent(front_left,front_right,back_left,back_right)
         self.percent_movement(p_front_left,p_front_right,p_back_left,p_back_right)
-
         self.callc_encoder(p_front_left,p_front_right,p_back_left,p_back_right)
 
 class MotorControllerHelper(Node):
@@ -133,13 +135,10 @@ class MotorControllerHelper(Node):
         super().__init__('motor_controller_helper')
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 1)
 
-        WHEEL_GEOMETRY = 0.291
+        wheel_geometry = 0.291
         self.wheel_size = 0.074 #durchmesser in meter
         self.max_speed_ms = (self.wheel_size * math.pi) * 1 #maximal eine umdreung pro sekunde
-        self.max_seeed_rotation_rs = (4 * self.max_speed_ms) / (4 * WHEEL_GEOMETRY)
-
-    def callculate_linear_movement():
-        pass
+        self.max_seeed_rotation_rs = (4 * self.max_speed_ms) / (4 * wheel_geometry)
         
     def front(self,percent):
         msg = Twist()

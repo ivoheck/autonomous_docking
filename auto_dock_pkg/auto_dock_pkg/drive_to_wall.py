@@ -4,7 +4,7 @@
 #subscriber KLasse https://docs.ros.org/en/kinetic/api/rospy/html/rospy.topics.Subscriber-class.html
 
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
@@ -23,7 +23,7 @@ class DriveToWall(Node):
             '/scan',
             self.listener_callback,
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
-        self.subscription  # prevent unused variable warning
+        self.subscription 
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,

@@ -38,7 +38,6 @@ class DockingManager(Node):
 
         #self.timer = self.create_timer(1.0, self.timer_callback)
 
-
         if __name__ == '__main__':
             msg_find_qr = DockTrigger()
             msg_find_qr.trigger = True
@@ -96,6 +95,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('find_qr failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -118,6 +118,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('drive_to_qr failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -140,6 +141,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('face_wall failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -162,6 +164,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('drive_to_wall failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -184,6 +187,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('qr_center failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -195,6 +199,9 @@ class DockingManager(Node):
         if msg.process == 'final_docking':
             if msg.success == True and msg.time == self.current_dock_stamp:
                 self.get_logger().info('final_docking success')
+                self.get_logger().info('docking time succses' + ' ' + str(time.time() - self.current_dock_stamp))
+
+                self.current_dock_stamp = None
 
                 msg_current_state = String()
                 msg_current_state.data = 'docked'
@@ -212,6 +219,7 @@ class DockingManager(Node):
 
             elif msg.success == False and msg.time == self.current_dock_stamp:
                 self.get_logger().error('final_docking failed')
+                self.get_logger().info('docking time fail' + ' ' + str(time.time() - self.current_dock_stamp))
 
                 msg = String()
                 msg.data = 'docking_fail'
@@ -230,8 +238,9 @@ class DockingManager(Node):
             self.get_logger().info('starting find_qr')
             msg_find_qr = DockTrigger()
             msg_find_qr.trigger = True
-            msg_find_qr.time = msg.time
-            self.current_dock_stamp = msg.time
+
+            self.current_dock_stamp = time.time()
+            msg_find_qr.time = self.current_dock_stamp
             self.current_dock_state = 'find_qr'
 
             self.publisher_find_qr_node_state.publish(msg=msg_find_qr)

@@ -39,13 +39,11 @@ int convert_speed(int speed){
 void setup() {
   Serial.begin(9600);
   
-  // Setze die Maximalgeschwindigkeit für die Motoren
   stepper1.setMaxSpeed(maxSpeed); // Schritte pro Sekunde
   stepper2.setMaxSpeed(maxSpeed);
   stepper3.setMaxSpeed(maxSpeed); 
   stepper4.setMaxSpeed(maxSpeed);   
 
-  // Setze die Anfangsgeschwindigkeit
   stepper1.setSpeed(0);     // Schritte pro Sekunde
   stepper2.setSpeed(0);
   stepper3.setSpeed(0);      

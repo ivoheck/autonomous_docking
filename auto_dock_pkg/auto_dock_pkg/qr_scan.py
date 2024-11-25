@@ -54,9 +54,13 @@ class QrScan(Node):
 
     def stop_node(self):
         self.state = False
-        self.timer.destroy()
+        try:
+            self.timer.destroy()
+        except:
+            pass
 
-    def callc_movement(self,points,mid_target,img,identifier):
+
+    def callc_possition(self,points,mid_target,img,identifier):
         if points is not None:
             x1 = float(points[0][0])
             x2 = float(points[1][0])
@@ -101,11 +105,11 @@ class QrScan(Node):
             if qr_center in decoded_info:
                 index = decoded_info.index(qr_center)
                 #TODO: hier schauen ob unterschied gemacht werden muss
-                return self.callc_movement(points[index],mid_target,img,'t')
+                return self.callc_possition(points[index],mid_target,img,'t')
     
             elif qr_mid in decoded_info:
                 index = decoded_info.index(qr_mid)
-                return self.callc_movement(points[index],mid_target,img,'c')
+                return self.callc_possition(points[index],mid_target,img,'c')
 
             #TODO: evtl diesen case extra betrachten
             #elif qr_left in decoded_info and qr_rigth in decoded_info:

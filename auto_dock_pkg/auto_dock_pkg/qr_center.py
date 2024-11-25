@@ -1,6 +1,6 @@
 #https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 
@@ -111,15 +111,18 @@ class CenterQr(Node):
             return
 
         direction,diff,qrcode = msg.direction,msg.offset,msg.qrcode
+
         if direction != 0.0:
             self.last_direction = direction
             self.last_diff = diff
             self.last_qrcode = qrcode
             self.drive(direction=direction,diff=diff,qrcode=qrcode)
+
+        #QR wurde nicht gefunde
         else:
+            #Hier wird überprüft ob Roboter rechts oder links an der Stion vorbei fährt
             if self.lidar_front is not None and self.lidar_left is not None:
                 #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
-                #TODO das nochmal überprüfen
                 print('offset:',self.lidar_left - self.lidar_right)
                 if self.lidar_left - self.lidar_right > 0.045:
                     self.last_direction = -1.0
@@ -129,7 +132,7 @@ class CenterQr(Node):
                     self.last_direction = 1.0
                     print('reach rigth side')
 
-
+            # Roboter nutz lezte information des QR scans
             if self.last_direction is not None:
                 self.drive(direction=self.last_direction,diff=self.last_diff,qrcode=self.last_qrcode)
                 return
@@ -153,8 +156,7 @@ class CenterQr(Node):
             self.controller.left(percent=5.0)
 
         elif qrcode == 'c':
-            if diff < 0.02 + self.goal_offset and diff > -0.02 + self.goal_offset:
-                #print('end')
+            if diff < 0.01 + self.goal_offset and diff > -0.01 + self.goal_offset:
                 self.controller.stop()
                 
                 msg_dock_feedback = DockFeedback()
@@ -166,11 +168,17 @@ class CenterQr(Node):
                 self.stop_node()
                 return
             
-            elif diff > 0.02 + self.goal_offset:
-                self.controller.left(percent=5.0)
+            elif diff > 0.01 + self.goal_offset:
+                if diff > 0.3 + self.goal_offset:
+                    self.controller.left(percent=5.0)
+                else:
+                    self.controller.left(percent=1.0)
 
             else:
-                self.controller.right(percent=5.0)
+                if diff < -0.3 +self.goal_offset:
+                    self.controller.right(percent=5.0)
+                else:
+                    self.controller.right(percent=1.0)
 
         elif direction == -1.0:
             self.controller.right(percent=5.0)

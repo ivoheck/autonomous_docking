@@ -1,6 +1,6 @@
 #https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool
@@ -112,20 +112,10 @@ def main(args=None):
     rclpy.init(args=args)
 
     undock = Undock()
-
-    executor = rclpy.executors.SingleThreadedExecutor()
-    executor.add_node(undock)
-
-    try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Ensure that the shutdown happens only if the context was initialized
-        if rclpy.ok():
-            executor.shutdown()
-            undock.destroy_node()
-            rclpy.shutdown()
-
+    rclpy.spin(undock)
+    
+    undock.destroy_node()
+    rclpy.shutdown()
+    
 if __name__ == '__main__':
     main()

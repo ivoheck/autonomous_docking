@@ -75,6 +75,8 @@ class GlobalPlaner(Node):
         self.current_nav_goal = None
         self.current_dock_goal = None
 
+        self.start_nav_time = None
+
         self.get_logger().info('Starting planer loop')
         self.timer = self.create_timer(1, self.global_planer) 
 
@@ -164,7 +166,6 @@ class GlobalPlaner(Node):
                 self.current_nav_goal = None
 
     def get_nav_goal_pos(self,goal):
-        #TODO: get info from config
         return_pose = PoseStamped()
         return_pose.header.frame_id = 'map'
         return_pose.header.stamp = self.nav.get_clock().now().to_msg() 
@@ -204,9 +205,15 @@ class GlobalPlaner(Node):
     def set_navigation_goal(self,nav_goal_pose,ws):
 
         self.get_logger().info(f'Navigat to {ws}')
+        self.start_nav_time = time.time()
         self.nav.goToPose(nav_goal_pose)
 
     def start_docking(self,ws):
+        if self.start_nav_time is not None:
+            self.get_logger().info('Navigation time' + ' ' + str(time.time() - self.start_nav_time) + 's')
+            self.start_nav_time = None
+        else:
+            self.get_logger().info('Unable to measure navigation time')
 
         #Default ws ist 1
         try:
@@ -219,7 +226,6 @@ class GlobalPlaner(Node):
         msg = DockTrigger()
         msg.trigger = True
         msg.wsnumber = ws_nr
-        msg.time = int(time.time())
         self.publisher_start_docking.publish(msg)
 
     def start_undocking(self):

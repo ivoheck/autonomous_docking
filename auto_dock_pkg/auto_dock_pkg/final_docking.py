@@ -1,7 +1,7 @@
 import sys
 import json
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool

@@ -1,6 +1,6 @@
 #https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 import time
@@ -15,7 +15,7 @@ from custom_interfaces.msg import DockFeedback
 class DriveToQr(Node):
     def __init__(self):
         super().__init__('drive_to_qr')
-        self.tollerace = 0.05 # wert innerhalg geradeaus gefahren wird
+        self.tollerace = 0.05 # value within which straight driving occurs
 
         self.controller = motor_controller.MotorControllerHelper()
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -28,29 +28,19 @@ class DriveToQr(Node):
 
         self.node_state = False
 
-        self.subscription = self.create_subscription(
+        self.subscription_trigger = self.create_subscription(
             DockTrigger,
             'trigger_dock_node/drive_to_qr_node',
             self.listener_callback_manage_node_state,
             1)
-        self.subscription
+        self.subscription_trigger
 
-    def listener_callback_manage_node_state(self,msg):
-        if msg.trigger:
-            self.start_node()
-            self.dock_time = msg.time
-        else:
-            self.stop_node()
-
-
-    def start_node(self):
-        self.subscription = self.create_subscription(
+        self.subscription_qr_pos = self.create_subscription(
             QrPos,
             '/qr_pos',
             self.listener_callback,
             1)
-        
-        self.subscription  # prevent unused variable warning
+        self.subscription_qr_pos
 
         self.lidar_subscription = self.create_subscription(
             LaserScan,
@@ -60,6 +50,15 @@ class DriveToQr(Node):
         
         self.lidar_subscription
 
+    def listener_callback_manage_node_state(self,msg):
+        if msg.trigger:
+            self.start_node()
+            self.dock_time = msg.time
+        else:
+            self.stop_node()
+
+
+    def start_node(self): 
         self.foundQr = False
         self.state = True
         self.lidar_msg = None
@@ -130,7 +129,7 @@ class DriveToQr(Node):
         else:
             if self.foundQr and self.lidar_msg is not None:
 
-                #Der roboter fährt auch ohne QR code so lange bis die distanz nach vorne zu klein wird
+                #The robot also drives without a QR code until the distance in front becomes too small.
                 if front_dist <= 0.3:
                     self.controller.stop()
                     

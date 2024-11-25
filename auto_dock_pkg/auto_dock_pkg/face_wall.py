@@ -3,7 +3,7 @@
 #subscriber KLasse https://docs.ros.org/en/kinetic/api/rospy/html/rospy.topics.Subscriber-class.html
 
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
@@ -26,7 +26,7 @@ class FaceWall(Node):
             '/scan',
             self.listener_callback,
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
-        self.subscription  # prevent unused variable warning
+        self.subscription 
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
@@ -48,6 +48,10 @@ class FaceWall(Node):
 
         self.dock_time = None
         self.node_state = False
+
+        if __name__ == '__main__':
+            self.start_node()
+            self.dock_time = time.time()
 
 
     def listener_callback_manage_node_state(self, msg):
@@ -91,11 +95,11 @@ class FaceWall(Node):
         l_value = l_1 + l_2 + l_6 + l_7 + l_11
         r_value = r_1 + r_2 + r_6 + r_7 + r_11
 
-        print(front)
+        if math.isinf(abs(l_value)) or math.isinf(abs(r_value)):
+            return
 
         diff = l_value -r_value
-        if math.isinf(abs(diff)):
-            return
+        print(l_value,r_value, diff)
         
         diff -= self.lidar_offset
 

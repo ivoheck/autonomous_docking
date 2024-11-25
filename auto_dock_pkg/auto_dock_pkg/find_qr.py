@@ -1,6 +1,6 @@
 #https://docs.ros.org/en/foxy/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html
 
-from autonomous_docking_pkg import motor_controller
+from robot_controll_pkg import motor_controller
 import rclpy
 from rclpy.node import Node
 
@@ -28,6 +28,13 @@ class FindQr(Node):
             1)
         self.subscription
 
+        self.subscription = self.create_subscription(
+            QrPos,
+            '/qr_pos',
+            self.listener_callback,
+            1)
+        self.subscription
+
         self.state = True
         self.time_state = True
         self.time_start = None
@@ -38,6 +45,10 @@ class FindQr(Node):
 
         self.node_state = False
 
+        if __name__ == '__main__':
+            self.start_node()
+            self.dock_time = time.time()
+
     def listener_callback_manage_node_state(self, msg):
         if msg.trigger:
             self.start_node()
@@ -47,12 +58,6 @@ class FindQr(Node):
 
     def start_node(self):
         #self.get_logger().info('start find_qr_node')
-        self.subscription = self.create_subscription(
-            QrPos,
-            '/qr_pos',
-            self.listener_callback,
-            10)
-        self.subscription
 
         self.state = True
         self.time_start = time.time()
@@ -145,7 +150,7 @@ class FindQr(Node):
             else:
                 self.controller.turn_right(10.0)
 
-        #das wird gemacht da manchmal zwischendurch kein qr code gescant wird
+        #das wird gemacht fals zwischendurch kein qr code gescant wird
         elif self.last_direction == 1.0:
             self.controller.turn_left(5.0)
 

@@ -46,23 +46,10 @@ class LidarFillter(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-
     lidar_fillter = LidarFillter()
-
-    executor = rclpy.executors.SingleThreadedExecutor()
-    executor.add_node(lidar_fillter)
-    
-    try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Ensure that the shutdown happens only if the context was initialized
-        if rclpy.ok():
-            executor.shutdown()
-            lidar_fillter.destroy_node()
-            rclpy.shutdown()
-
+    rclpy.spin(lidar_fillter)
+    lidar_fillter.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

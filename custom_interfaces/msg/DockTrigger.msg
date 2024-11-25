@@ -1,3 +1,3 @@
 bool trigger
 int64 wsnumber
-int32 time
+float64 time
