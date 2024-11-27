@@ -39,7 +39,7 @@ class FindQr(Node):
         self.time_state = True
         self.time_start = None
         self.qr_state = False
-        self.last_direction = None
+        self.last_offset = None
 
         self.dock_time = None
 
@@ -57,24 +57,24 @@ class FindQr(Node):
             self.stop_node()
 
     def start_node(self):
-        #self.get_logger().info('start find_qr_node')
+        self.get_logger().debug('start find_qr_node')
 
         self.state = True
         self.time_start = time.time()
         self.qr_state = False
-        self.last_direction = None
+        self.last_offset = None
 
         self.node_state = True
 
     def stop_node(self):
-        #self.get_logger().info('stop find_qr_node')
+        self.get_logger().debug('stop find_qr_node')
         self.subscription = None
 
         self.state = True
         self.time_state = True
         self.time_start = None
         self.qr_state = False
-        self.last_direction = None
+        self.last_offset = None
 
         self.node_state = False
         
@@ -84,7 +84,6 @@ class FindQr(Node):
 
         if time.time() - self.time_start > 60.0 and self.qr_state == False:#60
             self.controller.stop()
-            #self.get_logger().error('QR not Found in time (60s)')
 
             msg_dock_feedback = DockFeedback()
             msg_dock_feedback.time = self.dock_time
@@ -98,7 +97,6 @@ class FindQr(Node):
 
         if time.time() - self.time_start > 80.0 and self.qr_state == True:
             self.controller.stop()
-            #self.get_logger().error('QR Found But Failed alignment time (80s)')
 
             msg_dock_feedback = DockFeedback()
             msg_dock_feedback.time = self.dock_time
@@ -109,11 +107,35 @@ class FindQr(Node):
             self.publisher_node_state.publish(msg=msg_dock_feedback)
             self.stop_node()
             return
-    
-        if msg.direction == 1.0:
+
+
+        #self.get_logger().info(str(msg))
+        if msg.qrcode == '':
+            #Kein QR-Code in aktueller iteration gefunden
+            
+            if self.last_offset is None:
+                #Wenn noch nie ein Code gefunden wurde wird im uhrzeigersinn gedreht
+                self.controller.turn_left(20.0)
+                self.get_logger().debug('turn left')
+                return
+
+            if self.last_offset > 0.0:
+                self.controller.turn_left(5.0)
+                self.get_logger().debug('turn left slow')
+                return
+
+            if self.last_offset < 0.0:
+                self.controller.turn_right(5.0)
+                self.get_logger().debug('turn right slow')
+                return
+            
+
+        
+        #Es wurde QR-Code in aktueller iteration gefunden
+        if msg.offset > 0.0:
             self.qr_state = True
-            self.last_direction = 1.0
-            if abs(msg.offset) < 0.1:
+            self.last_offset = msg.offset
+            if msg.offset < 0.1:
                 self.controller.stop()
                 self.get_logger().info('QR Found')
                 
@@ -124,16 +146,21 @@ class FindQr(Node):
             
                 self.publisher_node_state.publish(msg=msg_dock_feedback)
                 self.stop_node()
+                return
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_left(5.0)
+                self.get_logger().debug('turn left slow')
+                return
             else:
                 self.controller.turn_left(10.0)
+                self.get_logger().debug('turn left')
+                return
 
-        elif msg.direction == -1.0:
+        elif msg.offset <= 0.0:
             self.qr_state = True
-            self.last_direction = -1.0
-            if abs(msg.offset) < 0.1:
+            self.last_offset = msg.offset 
+            if msg.offset < 0.1:
                 self.controller.stop()
                 self.get_logger().info('QR Found')
                 
@@ -144,21 +171,16 @@ class FindQr(Node):
             
                 self.publisher_node_state.publish(msg=msg_dock_feedback)
                 self.stop_node()
+                return
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_right(5.0)
+                self.get_logger().debug('turn right slow')
+                return
             else:
                 self.controller.turn_right(10.0)
-
-        #das wird gemacht fals zwischendurch kein qr code gescant wird
-        elif self.last_direction == 1.0:
-            self.controller.turn_left(5.0)
-
-        elif self.last_direction == -1.0:
-            self.controller.turn_right(5.0)
-
-        else:
-            self.controller.turn_left(20.0)
+                self.get_logger().debug('turn right')
+                return
     
 
 def main(args=None):

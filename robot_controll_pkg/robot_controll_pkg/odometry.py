@@ -14,7 +14,6 @@ import time
 import math
 
 #Class listens to the cmd_vel topic ang generates and publishes the odometry inormation
-#TODO: den koordinaten frame könnte man mit einem topic updaten welches immer bei einem arbeitzplatz updatet wo genau die position ist
 class OdometryPublisher(Node):
 
     def __init__(self):
@@ -31,30 +30,12 @@ class OdometryPublisher(Node):
             '/encoder',
             self.listener_callback_encoder,
             1)
-        self.subscription_cmd_vel  # prevent unused variable warning
-
-        self.subscription_pose_correction = self.create_subscription(
-            PoseWithCovarianceStamped,
-            '/pose',
-            self.correct_odom,
-            1)
-        self.subscription_cmd_vel  # prevent unused variable warning
+        self.subscription_cmd_vel 
 
         self.publisher_ = self.create_publisher(Odometry, '/odom', 10)
         #10 herz
         self.timer = self.create_timer(1/self.refresh_rate, self.odom_callback)
 
-    def correct_odom(self, msg):
-        return
-        orientation = msg.pose.pose.orientation 
-        rotation = [orientation.x,orientation.y,orientation.z,orientation.w]
-        rotation = R.from_quat(rotation)
-        rotation = rotation.as_euler('xyz', degrees=False)[2]
-
-        self.last_z_rad = rotation
-        position = msg.pose.pose.position
-        self.last_pose_x = position.x
-        self.last_pose_y = position.y
 
     def listener_callback_encoder(self, msg):
         self.twist = msg

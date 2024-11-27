@@ -42,11 +42,11 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        motor_controller_node,
         cube_bot_description_launch,
-        odometry_publisher_node,
         sllidar_launch,
+        docking_bringup_launch,
+        motor_controller_node,
+        odometry_publisher_node,
         lidar_fillter_node,
-        lock_controller_node,
-        docking_bringup_launch
+        lock_controller_node
     ])

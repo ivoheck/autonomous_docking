@@ -9,6 +9,7 @@ from rclpy.node import Node
 from custom_interfaces.msg import QrPos
 from custom_interfaces.msg import DockTrigger
 import cv2
+import time
 
 #Qr code benennung:
 # 'ws_1' (orientierungs code workespace 1)
@@ -31,10 +32,10 @@ class QrScan(Node):
         self.subscription_node_state
 
         self.cam_port = 0
-        self.cam = cv2.VideoCapture(self.cam_port)
-        #720p qualität
-        #self.cam.set(3, 1280)
-        #self.cam.set(4, 720)
+        self.cam = None 
+
+        self.timer_time = 0
+        self.timer_iteration = 0
 
         if __name__ == '__main__':
             self.goal_ws_nr = 1
@@ -49,18 +50,30 @@ class QrScan(Node):
 
     def start_node(self):
         self.state = True
-        #self.get_logger().info('start qr_scan_node')
+        self.cam = cv2.VideoCapture(self.cam_port)
         self.timer = self.create_timer(0.1, self.start_scan)
 
     def stop_node(self):
         self.state = False
+        self.cam = None
         try:
             self.timer.destroy()
         except:
             pass
 
+        #Berechnet die durchschnittliche Frequenz der Node
+        self.get_logger().info(f'qr scan avg hz: {1/(self.timer_time/self.timer_iteration)}')
+        self.timer_time = 0
+        self.timer_iteration = 0
 
-    def callc_possition(self,points,mid_target,img,identifier):
+        #Dies soll sicherstellen das keine verhalteten informationen auf dem topic verbleiben
+        msg = QrPos()
+        msg.offset = 0.0
+        msg.qrcode = ''
+        self.publisher_.publish(msg)
+
+
+    def callc_possition_t_c(self,points,mid_target,identifier):
         if points is not None:
             x1 = float(points[0][0])
             x2 = float(points[1][0])
@@ -82,7 +95,37 @@ class QrScan(Node):
                 #print('rigth',dif)
                 return (mid_target,qr_mid_x,-1.0,float(dif),identifier)#rechts
         else:
-            return (mid_target,None,0.0,0.0,identifier) 
+            return (mid_target,None,0.0,0.0,identifier)
+        
+    def callc_possition_r_l(self,points,mid_target,identifier):
+        if points is not None:
+            x1 = float(points[0][0])
+            x2 = float(points[1][0])
+            x3 = float(points[2][0])
+            x4 = float(points[3][0])
+
+            x_mean_r = (x2 + x3)/2
+            x_mean_l = (x1 + x4)/2
+
+            qr_mid_x = (x_mean_r - x_mean_l)/2 + x_mean_l
+
+            if identifier == 'l':
+                direction = -1.0
+            elif identifier == 'r':
+                direction = 1.0
+            
+            if mid_target > qr_mid_x:
+                dif = (mid_target - qr_mid_x)/mid_target
+                #print('left',dif)
+                return (mid_target,qr_mid_x,direction,float(dif),identifier)#links
+            else:
+                #dif = (qr_mid_x- mid_target)/mid_target
+                dif = (mid_target - qr_mid_x)/mid_target
+                #print('rigth',dif)
+                return (mid_target,qr_mid_x,direction,float(dif),identifier)#rechts
+        else:
+            return (mid_target,None,0.0,0.0,identifier)
+
         
     def scan(self,img):
         try:
@@ -105,31 +148,33 @@ class QrScan(Node):
             if qr_center in decoded_info:
                 index = decoded_info.index(qr_center)
                 #TODO: hier schauen ob unterschied gemacht werden muss
-                return self.callc_possition(points[index],mid_target,img,'t')
+                return self.callc_possition_t_c(points[index],mid_target,'t')
     
             elif qr_mid in decoded_info:
                 index = decoded_info.index(qr_mid)
-                return self.callc_possition(points[index],mid_target,img,'c')
+                return self.callc_possition_t_c(points[index],mid_target,'c')
 
             #TODO: evtl diesen case extra betrachten
             #elif qr_left in decoded_info and qr_rigth in decoded_info:
             #    pass
     
             elif qr_left in decoded_info:
-                return (None,None,-1.0,1.0,'l')
+                index = decoded_info.index(qr_left)
+                return self.callc_possition_r_l(points[index],mid_target,'l')
 
             elif qr_rigth in decoded_info:
-                return (None,None,1.0,1.0,'r')
+                index = decoded_info.index(qr_rigth)
+                return self.callc_possition_r_l(points[index],mid_target,'r')
 
             #Es wurde codes gefunden aber nicht die passenden dieser fall wird gewerte wie als wenn keiner gefunden wurde
             #da man jetzt nicht sicher stellen kann wo sich der roboter befindet
             else:
                 return None
-                #return (mid_target,None,0.0,0.0)
         except:
             pass
 
     def start_scan(self):
+        start_timer_time = time.time()
         if self.cam:
             try: 
                 result, image = self.cam.read()
@@ -138,19 +183,20 @@ class QrScan(Node):
                 msg = QrPos()
 
                 if res is not None:
-                    msg.direction = res[2]
                     msg.offset = res[3]
                     msg.qrcode = res[4]
                     self.publisher_.publish(msg)
 
                 else:
-                    msg.direction = 0.0
                     msg.offset = 0.0
                     msg.qrcode = ''
                     self.publisher_.publish(msg)
 
             except:
                 pass
+
+        self.timer_time += time.time() - start_timer_time
+        self.timer_iteration += 1
 
 
 def main(args=None):

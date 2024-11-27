@@ -20,8 +20,9 @@ class DriveToQr(Node):
         self.controller = motor_controller.MotorControllerHelper()
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         self.publisher_node_state = self.create_publisher(DockFeedback, '/dock_feedback', 1)
-        self.foundQr = False
+
         self.state = True
+        self.qr_found = False
         self.lidar_msg = None
 
         self.dock_time = None
@@ -59,8 +60,8 @@ class DriveToQr(Node):
 
 
     def start_node(self): 
-        self.foundQr = False
         self.state = True
+        self.qr_found = False
         self.lidar_msg = None
 
         self.node_state = True
@@ -68,11 +69,8 @@ class DriveToQr(Node):
 
 
     def stop_node(self):
-        self.subscription = None
-        self.lidar_subscription = None
-
-        self.foundQr = False
         self.state = True
+        self.qr_found = False
         self.lidar_msg = None
 
         self.node_state = False
@@ -96,12 +94,10 @@ class DriveToQr(Node):
             self.publisher_node_state.publish(msg=msg_dock_feedback)
             self.stop_node()
             return
-        
-        if self.state:
-            self.state = False
-            self.controller.front(5.0)
 
-        #self.get_logger().info(str(msg))
+        self.get_logger().debug(str(msg))
+
+        #Überprüfen ob die station schon erreicht ist
         if self.lidar_msg is not None:
             front_dist = self.lidar_msg.ranges[0]
             if front_dist <= 0.3:
@@ -114,36 +110,37 @@ class DriveToQr(Node):
             
                 self.publisher_node_state.publish(msg=msg_dock_feedback)
                 self.stop_node()
+                return
             
             #self.get_logger().info(str(front_dist))
 
-        direction,offset = msg.direction,msg.offset
-        if direction != 0.0:
-            self.foundQr = True
-            if offset <= self.tollerace:
+        if msg.qrcode != '':
+            #Es wurde ein code gefunden
+            self.qr_found = True
+            if abs(msg.offset) <= self.tollerace:
                 self.controller.front(20.0)
+                self.get_logger().debug('front')
+                return
 
-            elif offset > self.tollerace:
-                self.controller.drive_curve(direction=direction,percent_x=20.0,percent_z=6.0)
-
+            else:
+                if msg.offset > 0.0:
+                    self.controller.drive_curve(direction=1.0,percent_x=20.0,percent_z=6.0)
+                    self.get_logger().debug('links')
+                    return
+                else:
+                    self.controller.drive_curve(direction=-1.0,percent_x=20.0,percent_z=6.0)
+                    self.get_logger().debug('rechts')
+                    return
+        
+        #Fals QR-Code schon einmal gefunden wurde
+        if self.qr_found:
+            self.controller.front(20.0)
+            self.get_logger().debug('front')
         else:
-            if self.foundQr and self.lidar_msg is not None:
+            #Roboter begind sofort geradeaus zu fahren
+            self.controller.front(5.0)
+            self.get_logger().debug('front langsam')
 
-                #The robot also drives without a QR code until the distance in front becomes too small.
-                if front_dist <= 0.3:
-                    self.controller.stop()
-                    
-                    msg_dock_feedback = DockFeedback()
-                    msg_dock_feedback.time = self.dock_time
-                    msg_dock_feedback.process = 'drive_to_qr'
-                    msg_dock_feedback.success = True
-            
-                    self.publisher_node_state.publish(msg=msg_dock_feedback)
-                    self.stop_node()
-
-            #else:
-            #    #Wenn nie ein QR code gefunden wurde
-            #    self.controller.stop()
 
 
 def main(args=None):

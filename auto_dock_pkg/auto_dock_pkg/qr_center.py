@@ -17,8 +17,7 @@ class CenterQr(Node):
     def __init__(self):
         super().__init__('center_qr')
         self.last_direction = None
-        self.last_diff = None
-        self.last_qrcode = None
+        self.last_speed = None
         self.subscription = self.create_subscription(
             QrPos,
             '/qr_pos',
@@ -65,17 +64,22 @@ class CenterQr(Node):
 
     def start_node(self):
         #self.get_logger().info('start qr_center_node')
+        self.last_direction = None
+        self.last_speed = None
         self.node_state = True
         self.time_start = time.time()
+        
 
     def stop_node(self):
         #self.get_logger().info('stop qr_center_node')
         self.node_state = False
+        self.last_direction = None
+        self.last_speed = None
 
     def listener_callback_lidar(self, msg):
         if self.node_state == False:
             return
-
+        
         if time.time() - self.time_start > 60.0:#60
             self.controller.stop()
 
@@ -102,6 +106,8 @@ class CenterQr(Node):
         if self.node_state == False:
             return
         
+
+        #Abstand zur station wird gegebenfalls korrigiert
         if self.lidar_front is not None and self.lidar_front < 0.25:
             self.controller.back(percent=5.0)
             return
@@ -110,90 +116,105 @@ class CenterQr(Node):
             self.controller.front(percent=5.0)
             return
 
-        direction,diff,qrcode = msg.direction,msg.offset,msg.qrcode
+        self.get_logger().info(str(msg))
 
-        if direction != 0.0:
-            self.last_direction = direction
-            self.last_diff = diff
-            self.last_qrcode = qrcode
-            self.drive(direction=direction,diff=diff,qrcode=qrcode)
+        #Überprüfung ob ein QR code in aktueller iteration gefunden wurde
+        if msg.qrcode == 'l':
+            self.last_direction = -1.0
+            self.last_speed = 5.0
+            self.controller.right(percent=5.0)
+            self.get_logger().info('rechts')
+            return
+        
+        if msg.qrcode == 'r':
+            self.last_direction = 1.0
+            self.last_speed = 5.0
+            self.controller.left(percent=5.0)
+            self.get_logger().info('links')
+            return
+        
+        if msg.qrcode == 'c':
+            self.last_direction,self.last_speed  = self.final_centering(msg.offset)
+            return
+        
 
-        #QR wurde nicht gefunde
+        #Kein qr code in aktueller iteration
+        #Hier wird überprüft ob Roboter rechts oder links an der Stion vorbei fährt
+        if self.lidar_right is not None and self.lidar_left is not None:
+            #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
+            print('offset:',self.lidar_left - self.lidar_right)
+            if self.lidar_left - self.lidar_right > 0.045:
+                self.last_direction = -1.0
+                self.last_speed = 5.0
+                self.get_logger().info('reach left side')
+                print('reach left side')
+                
+            elif self.lidar_left - self.lidar_right < -0.045:
+                self.last_direction = 1.0
+                self.last_speed = 5.0
+                self.get_logger().info('reach rigth side')
+                print('reach rigth side')
+        
+        #Letzte bewegung wird fortgeführt
+        if self.last_direction is not None:
+            if self.last_speed is None:
+                    self.last_speed = 5.0
+
+            if self.last_direction == -1.0:
+                self.controller.right(percent=self.last_speed)
+                self.get_logger().debug(f'rechts {self.last_speed}')
+                return
+
+            elif self.last_direction == 1.0:
+                self.controller.left(percent=self.last_speed)
+                self.get_logger().debug(f'links {self.last_speed}')
+                return
         else:
-            #Hier wird überprüft ob Roboter rechts oder links an der Stion vorbei fährt
-            if self.lidar_front is not None and self.lidar_left is not None:
-                #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
-                print('offset:',self.lidar_left - self.lidar_right)
-                if self.lidar_left - self.lidar_right > 0.045:
-                    self.last_direction = -1.0
-                    print('reach left side')
+            #Wenn noch nichts gefunden wurde fährt der Roboter nach links
+            print('no qr found driving left')
+            self.last_direction = 1.0
+            self.last_speed = 5.0
+
+
+    def final_centering(self,offset):
+
+        if offset < 0.01 + self.goal_offset and offset > -0.01 + self.goal_offset:
+            self.controller.stop()
                 
-                elif self.lidar_left - self.lidar_right < -0.045:
-                    self.last_direction = 1.0
-                    print('reach rigth side')
-
-            # Roboter nutz lezte information des QR scans
-            if self.last_direction is not None:
-                self.drive(direction=self.last_direction,diff=self.last_diff,qrcode=self.last_qrcode)
-                return
-
-            else:
-                #Qr-code wurde noch nie gesehen
-                if self.lidar_front is None or self.lidar_left is None:
-                    return
-                
-                else:
-                    #Wenn noch nichts gefunden wurde fährt der Roboter nach links
-                    print('no qr found driving left')
-                    self.drive(direction=1.0,diff=1.0,qrcode='')
-
-    def drive(self,direction,diff,qrcode):
-
-        if qrcode == 'l':
-            self.controller.right(percent=5.0)
-
-        elif qrcode == 'r':
-            self.controller.left(percent=5.0)
-
-        elif qrcode == 'c':
-            if diff < 0.01 + self.goal_offset and diff > -0.01 + self.goal_offset:
-                self.controller.stop()
-                
-                msg_dock_feedback = DockFeedback()
-                msg_dock_feedback.time = self.dock_time
-                msg_dock_feedback.process = 'qr_center'
-                msg_dock_feedback.success = True
+            msg_dock_feedback = DockFeedback()
+            msg_dock_feedback.time = self.dock_time
+            msg_dock_feedback.process = 'qr_center'
+            msg_dock_feedback.success = True
+            self.publisher_node_state.publish(msg=msg_dock_feedback)
+            self.stop_node()
+            return None,None
             
-                self.publisher_node_state.publish(msg=msg_dock_feedback)
-                self.stop_node()
-                return
-            
-            elif diff > 0.01 + self.goal_offset:
-                if diff > 0.3 + self.goal_offset:
-                    self.controller.left(percent=5.0)
-                else:
-                    self.controller.left(percent=1.0)
-
+        elif offset > 0.01 + self.goal_offset:
+            if offset > 0.3 + self.goal_offset:
+                self.controller.left(percent=5.0)
+                self.get_logger().debug('links')
+                return 1.0,5.0
             else:
-                if diff < -0.3 +self.goal_offset:
-                    self.controller.right(percent=5.0)
-                else:
-                    self.controller.right(percent=1.0)
+                self.controller.left(percent=1.0)
+                self.get_logger().debug('links langsam')
+                return 1.0,1.0
 
-        elif direction == -1.0:
-            self.controller.right(percent=5.0)
-
-        elif direction == 1.0:
-            self.controller.left(percent=5.0)
+        else:
+            if offset < -0.3 +self.goal_offset:
+                self.controller.right(percent=5.0)
+                self.get_logger().debug('rechts')
+                return -1.0,5.0
+            else:
+                self.controller.right(percent=1.0)
+                self.get_logger().debug('rechts langsam')
+                return -1.0,1.0
 
 
 def main(args=None):
     rclpy.init(args=args)
 
     center_qr = CenterQr()
-
     rclpy.spin(center_qr)
-    
     center_qr.destroy_node()
     rclpy.shutdown()
 
