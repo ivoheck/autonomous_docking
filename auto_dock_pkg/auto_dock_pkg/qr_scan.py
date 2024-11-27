@@ -13,9 +13,9 @@ import time
 
 #Qr code benennung:
 # 'ws_1' (orientierungs code workespace 1)
-# '1-l' (centrirungs code links (workspace 1))
-# '1-m' (centrirungs code mitte (workspace 1))
-# '1-r' (centrirungs code rechts (workspace 1))
+# '1-l' (zentrirungs code links (workspace 1))
+# '1-m' (zentrirungs code mitte (workspace 1))
+# '1-r' (zentrirungs code rechts (workspace 1))
 
 class QrScan(Node):
 
@@ -87,12 +87,9 @@ class QrScan(Node):
 
             if mid_target > qr_mid_x:
                 dif = (mid_target - qr_mid_x)/mid_target
-                #print('left',dif)
                 return (mid_target,qr_mid_x,1.0,float(dif),identifier)#links
             else:
-                #dif = (qr_mid_x- mid_target)/mid_target
                 dif = (mid_target - qr_mid_x)/mid_target
-                #print('rigth',dif)
                 return (mid_target,qr_mid_x,-1.0,float(dif),identifier)#rechts
         else:
             return (mid_target,None,0.0,0.0,identifier)
@@ -116,12 +113,9 @@ class QrScan(Node):
             
             if mid_target > qr_mid_x:
                 dif = (mid_target - qr_mid_x)/mid_target
-                #print('left',dif)
                 return (mid_target,qr_mid_x,direction,float(dif),identifier)#links
             else:
-                #dif = (qr_mid_x- mid_target)/mid_target
                 dif = (mid_target - qr_mid_x)/mid_target
-                #print('rigth',dif)
                 return (mid_target,qr_mid_x,direction,float(dif),identifier)#rechts
         else:
             return (mid_target,None,0.0,0.0,identifier)
@@ -147,7 +141,6 @@ class QrScan(Node):
 
             if qr_center in decoded_info:
                 index = decoded_info.index(qr_center)
-                #TODO: hier schauen ob unterschied gemacht werden muss
                 return self.callc_possition_t_c(points[index],mid_target,'t')
     
             elif qr_mid in decoded_info:
@@ -167,7 +160,6 @@ class QrScan(Node):
                 return self.callc_possition_r_l(points[index],mid_target,'r')
 
             #Es wurde codes gefunden aber nicht die passenden dieser fall wird gewerte wie als wenn keiner gefunden wurde
-            #da man jetzt nicht sicher stellen kann wo sich der roboter befindet
             else:
                 return None
         except:
@@ -188,6 +180,7 @@ class QrScan(Node):
                     self.publisher_.publish(msg)
 
                 else:
+                    #Default Massage wenn kein code gefunden werden kann
                     msg.offset = 0.0
                     msg.qrcode = ''
                     self.publisher_.publish(msg)

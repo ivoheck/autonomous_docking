@@ -15,8 +15,6 @@ import math
 import time
 
 
-#27,8 - 29,3
-
 class FaceWall(Node):
 
     def __init__(self):
@@ -62,12 +60,10 @@ class FaceWall(Node):
             self.stop_node()
 
     def start_node(self):
-        #self.get_logger().info('start face_wall_node')
         self.node_state = True
         self.time_start = time.time()
 
     def stop_node(self):
-        #self.get_logger().info('stop face_wall_node')
         self.node_state = False
         
     def listener_callback(self, msg):

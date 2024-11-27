@@ -5,12 +5,8 @@ from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from tf2_ros import TransformBroadcaster
-from geometry_msgs.msg import TransformStamped
-from geometry_msgs.msg import PoseWithCovarianceStamped
 
 from scipy.spatial.transform import Rotation as R
-import time
 import math
 
 #Class listens to the cmd_vel topic ang generates and publishes the odometry inormation
@@ -18,7 +14,7 @@ class OdometryPublisher(Node):
 
     def __init__(self):
         super().__init__('odometry_publisher')
-        self.refresh_rate = 10 #30
+        self.refresh_rate = 10
 
         self.twist = None
         self.last_z_rad = 0.0
@@ -41,6 +37,7 @@ class OdometryPublisher(Node):
         self.twist = msg
 
     def odom_callback(self):
+        self.get_logger().debug('test debug')
         odometry_msg = Odometry()
 
         odometry_msg.header.frame_id = 'odom'

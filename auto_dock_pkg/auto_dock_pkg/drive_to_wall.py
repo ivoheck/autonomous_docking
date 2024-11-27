@@ -46,12 +46,10 @@ class DriveToWall(Node):
             self.stop_node()
 
     def start_node(self):
-        #self.get_logger().info('start drive_to_wall_node')
         self.node_state = True
         self.time_start = time.time()
 
     def stop_node(self):
-        #self.get_logger().info('stop drive_to_wall_node')
         self.node_state = False
         
     def listener_callback(self, msg):

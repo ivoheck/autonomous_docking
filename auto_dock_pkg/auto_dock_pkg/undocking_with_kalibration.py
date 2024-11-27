@@ -26,7 +26,7 @@ class Undock(Node):
             '/scan',
             self.listener_callback,
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
-        self.subscription  # prevent unused variable warning
+        self.subscription  
         self.lidar_front = None
 
         self.subscription_qr_pos = self.create_subscription(
@@ -44,7 +44,7 @@ class Undock(Node):
             '/start_undock',
             self.listener_callback_start_undocking,
             1)
-        self.subscription_start_undocking  # prevent unused variable warning
+        self.subscription_start_undocking  
 
         #Zum manulellen undocking
         if __name__ == '__main__':

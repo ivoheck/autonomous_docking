@@ -53,13 +53,11 @@ class FinalDocking(Node):
             self.stop_node()
 
     def start_node(self):
-        #self.get_logger().info('start final_docking_node')
         self.node_state = True
         self.time_start = time.time()
         self.timer = self.create_timer(0.1, self.docking)
 
     def stop_node(self):
-        #self.get_logger().info('stop final_docking_node')
         self.node_state = False
 
         try:
@@ -108,8 +106,6 @@ class FinalDocking(Node):
             if abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) < self.check_value_dis:
                 self.close_lock()
                 self.controller.stop()
-
-                #self.get_logger().info('Docking failed')
   
                 msg_dock_feedback = DockFeedback()
                 msg_dock_feedback.time = self.dock_time
@@ -120,22 +116,20 @@ class FinalDocking(Node):
                 self.stop_node()
                 return
 
-        if (lidar_front >= 0.185 or lidar_front == 'inf'): #and offset == 0:
+        if (lidar_front >= 0.185 or lidar_front == 'inf'):
             self.controller.front(percent=5.0)
 
-        elif lidar_front >= 0.175: # and offset == 0:
+        elif lidar_front >= 0.175: 
             self.open_lock()
             self.controller.front(percent=10.0)
 
-        elif lidar_front >= 0.167: # and offset == 0:
+        elif lidar_front >= 0.167: 
             self.controller.front(percent=100.0)
 
         #Docking erfolgreich
         elif lidar_front < 0.167:
             self.close_lock()
             self.controller.stop()
-
-            #self.get_logger().info('Docking success')
 
             msg_dock_feedback = DockFeedback()
             msg_dock_feedback.time = self.dock_time

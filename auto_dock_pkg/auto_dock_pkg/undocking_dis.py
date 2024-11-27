@@ -23,7 +23,7 @@ class Undock(Node):
             '/scan',
             self.listener_callback,
             QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT))
-        self.subscription  # prevent unused variable warning
+        self.subscription  
         self.lidar_front = None
         self.status = 0
         self.lidar_offset = 0.14

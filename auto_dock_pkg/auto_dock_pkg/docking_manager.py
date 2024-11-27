@@ -36,8 +36,6 @@ class DockingManager(Node):
         self.current_dock_state = None
         self.current_ws = None
 
-        #self.timer = self.create_timer(1.0, self.timer_callback)
-
         if __name__ == '__main__':
             msg_find_qr = DockTrigger()
             msg_find_qr.trigger = True
@@ -51,19 +49,6 @@ class DockingManager(Node):
 
             self.publisher_qr_scan_node_state.publish(msg=msg_qr_scan)
             self.publisher_find_qr_node_state.publish(msg=msg_find_qr)
-
-    def timer_callback(self):
-        #es gibt keinen dock auftrag
-        if self.current_dock_state is None:
-            return
-        
-        if self.current_dock_state == 'find_qr':
-            #self.get_logger().info('state: find_qr')
-            return
-        
-        if self.current_dock_state == 'drive_to_qr':
-            #self.get_logger().info('state: drive_to_qr')
-            return
 
     def stop_all_processes(self):
         msg = DockTrigger()

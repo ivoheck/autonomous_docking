@@ -109,7 +109,7 @@ class FindQr(Node):
             return
 
 
-        #self.get_logger().info(str(msg))
+        self.get_logger().info(str(msg))
         if msg.qrcode == '':
             #Kein QR-Code in aktueller iteration gefunden
             
@@ -135,7 +135,7 @@ class FindQr(Node):
         if msg.offset > 0.0:
             self.qr_state = True
             self.last_offset = msg.offset
-            if msg.offset < 0.1:
+            if abs(msg.offset) < 0.1:
                 self.controller.stop()
                 self.get_logger().info('QR Found')
                 
@@ -150,17 +150,17 @@ class FindQr(Node):
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_left(5.0)
-                self.get_logger().debug('turn left slow')
+                self.get_logger().info('turn left slow')
                 return
             else:
                 self.controller.turn_left(10.0)
-                self.get_logger().debug('turn left')
+                self.get_logger().info('turn left')
                 return
 
-        elif msg.offset <= 0.0:
+        elif msg.offset < 0.0:
             self.qr_state = True
             self.last_offset = msg.offset 
-            if msg.offset < 0.1:
+            if abs(msg.offset) < 0.1:
                 self.controller.stop()
                 self.get_logger().info('QR Found')
                 
@@ -175,11 +175,11 @@ class FindQr(Node):
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_right(5.0)
-                self.get_logger().debug('turn right slow')
+                self.get_logger().info('turn right slow')
                 return
             else:
                 self.controller.turn_right(10.0)
-                self.get_logger().debug('turn right')
+                self.get_logger().info('turn right')
                 return
     
 

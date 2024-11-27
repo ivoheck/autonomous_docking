@@ -15,7 +15,7 @@ from custom_interfaces.msg import DockFeedback
 class DriveToQr(Node):
     def __init__(self):
         super().__init__('drive_to_qr')
-        self.tollerace = 0.05 # value within which straight driving occurs
+        self.tollerace = 0.05 # wert bei dem geradeaus gefahren wird
 
         self.controller = motor_controller.MotorControllerHelper()
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -112,7 +112,7 @@ class DriveToQr(Node):
                 self.stop_node()
                 return
             
-            #self.get_logger().info(str(front_dist))
+            self.get_logger().debug(str(front_dist))
 
         if msg.qrcode != '':
             #Es wurde ein code gefunden
