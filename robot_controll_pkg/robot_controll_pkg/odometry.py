@@ -9,7 +9,6 @@ from nav_msgs.msg import Odometry
 from scipy.spatial.transform import Rotation as R
 import math
 
-#Class listens to the cmd_vel topic ang generates and publishes the odometry inormation
 class OdometryPublisher(Node):
 
     def __init__(self):
@@ -80,7 +79,6 @@ class OdometryPublisher(Node):
             odometry_msg.pose.pose.position.x = self.last_pose_x
             odometry_msg.pose.pose.position.y = self.last_pose_y
 
-        #LLM
         current_time = self.get_clock().now().to_msg()
         odometry_msg.header.stamp = current_time
         self.publisher_.publish(odometry_msg)

@@ -27,7 +27,7 @@ class DriveToWall(Node):
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/drive_to_wall_node',
+            'dock_trigger/drive_to_wall_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_node_state
@@ -56,7 +56,7 @@ class DriveToWall(Node):
         if self.node_state == False:
             return
 
-        if time.time() - self.time_start > 10.0:
+        if time.time() - self.time_start > 15.0:
             self.controller.stop()
 
             msg_dock_feedback = DockFeedback()
@@ -73,7 +73,7 @@ class DriveToWall(Node):
         print(front)
         
         if front >= 0.25:
-            self.controller.front(percent=10.0)
+            self.controller.front(percent=5.0)
 
         elif front <= 0.20:
             self.controller.back(percent=5.0)

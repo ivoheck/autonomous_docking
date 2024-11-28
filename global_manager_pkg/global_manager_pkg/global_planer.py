@@ -15,7 +15,7 @@ import time
 
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 
-#current_state: navigation, docking, undocking, waiting
+#current_state: navigation, docking, undocking, waiting, docking_fail
 
 class GlobalPlaner(Node):
     def __init__(self):
@@ -70,7 +70,7 @@ class GlobalPlaner(Node):
         self.nav.lifecycleStartup()
 
         self.current_state = 'waiting'
-        self.current_ws = self.get_parameter('start_place').value #Startpoint
+        self.current_ws = self.get_parameter('start_place').value #Startpunkt
         self.current_nav_goal = None
         self.current_dock_goal = None
 
@@ -82,12 +82,12 @@ class GlobalPlaner(Node):
     def global_planer(self):
         self.get_logger().info(str(self.current_ws))
 
-        #Wait for docking to end
+        #Warten bis Docking beendet ist
         if self.current_state == 'docking':
             self.get_logger().info('Docking to WS')
             return
 
-        #Wait for undocking to end
+        #Warten bis Abdocken beendet ist
         if self.current_state == 'undocking':
             self.get_logger().info('Undocking from WS')
             return
@@ -97,20 +97,8 @@ class GlobalPlaner(Node):
             self.current_state = 'waiting'
             self.current_ws = 'no_ws'
             self.current_nav_goal = None
-
-            #if self.current_dock_goal is not None:
-                #nav_goal_pose = self.get_nav_goal_pos(self.current_dock_goal)
-                #self.set_navigation_goal(nav_goal_pose,self.current_dock_goal)
-                #self.current_nav_goal = self.current_dock_goal
-                #self.current_state = 'navigating'
-
-                #self.start_docking(self.current_dock_goal)
-                #self.current_state = 'docking'
-                #self.get_logger().info('Start docking')
-            #else:
-                #self.get_logger().info('Dock Recovery failed')
         
-        #Check if there is an active navigation goal
+        #Check ob es aktives Navigationsziel gibt
         if self.current_nav_goal is  None:
             self.get_logger().info('Waiting for Dock Goal')
             return
@@ -119,7 +107,7 @@ class GlobalPlaner(Node):
             self.get_logger().info('Goal reached')
             return
 
-        #There is a goal but the navigation for it to reach is not set yet
+        #Es gibt ein Ziel aber die Navigation wurde noch nicht initialisiert.
         if self.current_state == 'waiting':
             self.get_logger().info('Start new Navigation')
             nav_goal_pose = self.get_nav_goal_pos(self.current_nav_goal)
@@ -132,13 +120,12 @@ class GlobalPlaner(Node):
             self.current_state = 'navigating'
             self.current_ws = 'no_ws'
 
-        #There is a goal witch is not yet initiolised and Robot is docked a worstation
+        #Es gibt ein Ziel welches noch nicht initialisiert ist und der Roboter ist angedockt.
         if self.current_state == 'docked':
             self.get_logger().info('Start undocking')
-            self.start_undocking() #Wself.current_state will be change throu undocking_node to undocking
+            self.start_undocking() #self.current_state wird durch undocking_node geändert zu undocking
 
-        #Navigation is runnig
-        #TODO: add navigation abrechen bzw neuse ziel
+        #Navigation läuft
         if self.current_state == 'navigating':
             #TODO: add timeout
             if not self.nav.isTaskComplete():
@@ -194,7 +181,7 @@ class GlobalPlaner(Node):
             self.undeclare_parameter(f'{goal}.orientation.z')
             self.undeclare_parameter(f'{goal}.orientation.w')
         except:
-            #Use default oriantation
+            #Default Orientierung verwenden
             return_pose.pose.orientation.x = 0.0
             return_pose.pose.orientation.y = 0.0
             return_pose.pose.orientation.z = 0.0
@@ -215,7 +202,7 @@ class GlobalPlaner(Node):
         else:
             self.get_logger().info('Unable to measure navigation time')
 
-        #Default ws is 1
+        #Default ws ist 1
         try:
             ws_nr = int(ws.split('_')[1])
             self.get_logger().info(f'Dock to ws: {ws_nr}')

@@ -32,7 +32,7 @@ class Undock(Node):
             1)
         self.subscription_start_undocking  
 
-        #Zum manulellen undocking
+        #Zum manuellen Abdocken
         if __name__ == '__main__':
             self.open_lock()
             self.timer = self.create_timer(0.1, self.start_undock)
@@ -47,7 +47,7 @@ class Undock(Node):
         msg.data = 'undocking'
         self.publisher_current_state.publish(msg)
         
-        if self.lidar_front is not None and self.lidar_front < 0.3:
+        if self.lidar_front is not None and self.lidar_front < 0.5:
             self.controller.back(10.0)
 
         elif self.lidar_front is None:
@@ -66,7 +66,6 @@ class Undock(Node):
             self.publisher_current_ws.publish(msg_ws)
 
             self.timer.destroy()
-            #rclpy.shutdown()
 
     def listener_callback(self,msg):
         self.lidar_front = msg.ranges[0]

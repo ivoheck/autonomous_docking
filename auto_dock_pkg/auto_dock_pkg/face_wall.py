@@ -28,7 +28,7 @@ class FaceWall(Node):
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/face_wall_node',
+            'dock_trigger/face_wall_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_node_state
@@ -38,7 +38,7 @@ class FaceWall(Node):
         self.tolerance = 0.001
         #self.front_limit = 0.1
         self.state = True
-        #Diese variable wird zum kallibriren den Lidar sensors verwendet
+        #Diese Variable wird zum Kalibrieren des Lidar-Sensors verwendet
         self.lidar_offset = 0.0008181821216236461
         self.check = 0
         self.checks = 0
@@ -82,8 +82,7 @@ class FaceWall(Node):
             self.publisher_node_state.publish(msg=msg_dock_feedback)
             self.stop_node()
             return
-        
-        #TODO: evtl mehr datenpunkte nehmen und toleranz abhängig von der front range machen
+    
         front = msg.ranges[0]
         l_1, l_2, l_6, l_7, l_11 = msg.ranges[1], msg.ranges[2], msg.ranges[6], msg.ranges[7], msg.ranges[11]
         r_1, r_2, r_6, r_7, r_11 = msg.ranges[719], msg.ranges[718], msg.ranges[714], msg.ranges[715], msg.ranges[709]

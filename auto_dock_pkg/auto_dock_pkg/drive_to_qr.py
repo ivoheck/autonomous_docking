@@ -15,7 +15,7 @@ from custom_interfaces.msg import DockFeedback
 class DriveToQr(Node):
     def __init__(self):
         super().__init__('drive_to_qr')
-        self.tollerace = 0.05 # wert bei dem geradeaus gefahren wird
+        self.tollerace = 0.05 # Wert innerhalb dessen geradeaus gefahren wird
 
         self.controller = motor_controller.MotorControllerHelper()
         self.publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -31,7 +31,7 @@ class DriveToQr(Node):
 
         self.subscription_trigger = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/drive_to_qr_node',
+            'dock_trigger/drive_to_qr_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_trigger
@@ -97,7 +97,7 @@ class DriveToQr(Node):
 
         self.get_logger().debug(str(msg))
 
-        #Überprüfen ob die station schon erreicht ist
+        #Überprüfen ob die Station schon erreicht ist
         if self.lidar_msg is not None:
             front_dist = self.lidar_msg.ranges[0]
             if front_dist <= 0.3:
@@ -115,7 +115,7 @@ class DriveToQr(Node):
             self.get_logger().debug(str(front_dist))
 
         if msg.qrcode != '':
-            #Es wurde ein code gefunden
+            #Es wurde ein Code gefunden
             self.qr_found = True
             if abs(msg.offset) <= self.tollerace:
                 self.controller.front(20.0)
@@ -137,7 +137,7 @@ class DriveToQr(Node):
             self.controller.front(20.0)
             self.get_logger().debug('front')
         else:
-            #Roboter begind sofort geradeaus zu fahren
+            #Roboter beginnt sofort geradeaus zu fahren
             self.controller.front(5.0)
             self.get_logger().debug('front langsam')
 

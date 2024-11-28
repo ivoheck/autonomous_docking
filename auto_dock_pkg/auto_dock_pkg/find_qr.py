@@ -23,7 +23,7 @@ class FindQr(Node):
 
         self.subscription = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/find_qr_node',
+            'dock_trigger/find_qr_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription
@@ -111,10 +111,10 @@ class FindQr(Node):
 
         self.get_logger().info(str(msg))
         if msg.qrcode == '':
-            #Kein QR-Code in aktueller iteration gefunden
-            
+            #Kein QR-Code in aktueller Iteration gefunden
+
             if self.last_offset is None:
-                #Wenn noch nie ein Code gefunden wurde wird im uhrzeigersinn gedreht
+                #Wenn noch nie ein Code gefunden wurde, wird im Uhrzeigersinn gedreht
                 self.controller.turn_left(20.0)
                 self.get_logger().debug('turn left')
                 return
@@ -131,7 +131,7 @@ class FindQr(Node):
             
 
         
-        #Es wurde QR-Code in aktueller iteration gefunden
+        #Es wurde ein QR-Code in aktueller Iteration gefunden
         if msg.offset > 0.0:
             self.qr_state = True
             self.last_offset = msg.offset

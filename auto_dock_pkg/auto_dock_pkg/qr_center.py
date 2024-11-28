@@ -34,7 +34,7 @@ class CenterQr(Node):
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/qr_center_node',
+            'dock_trigger/qr_center_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_node_state
@@ -46,7 +46,7 @@ class CenterQr(Node):
         self.publisher_node_state = self.create_publisher(DockFeedback, '/dock_feedback', 1)
         self.controller = motor_controller.MotorControllerHelper()
 
-        self.goal_offset = -0.058595824241638186
+        self.goal_offset = -0.04842474460601807
 
         self.dock_time = None
         self.node_state = False
@@ -105,7 +105,7 @@ class CenterQr(Node):
             return
         
 
-        #Abstand zur station wird gegebenfalls korrigiert
+        #Abstand zur Station wird gegebenenfalls korrigiert
         if self.lidar_front is not None and self.lidar_front < 0.25:
             self.controller.back(percent=5.0)
             return
@@ -116,7 +116,7 @@ class CenterQr(Node):
 
         self.get_logger().info(str(msg))
 
-        #Überprüfung ob ein QR code in aktueller iteration gefunden wurde
+        #Überprüfung ob ein QR-Code in aktueller Iteration gefunden wurde
         if msg.qrcode == 'l':
             self.last_direction = -1.0
             self.last_speed = 5.0
@@ -136,10 +136,10 @@ class CenterQr(Node):
             return
         
 
-        #Kein qr code in aktueller iteration
-        #Hier wird überprüft ob Roboter rechts oder links an der Stion vorbei fährt
+        #Kein QR-Code in aktueller Iteration
+        #Hier wird überprüft, ob der Roboter rechts oder links an der Station vorbeifährt
         if self.lidar_right is not None and self.lidar_left is not None:
-            #Wenn der Roboter zu weit links ist muss das zentrum rechts sein
+            #Wenn der Roboter zu weit links ist muss das Zentrum rechts sein
             self.get_logger().debug(f'offset: {self.lidar_left - self.lidar_right}')
             if self.lidar_left - self.lidar_right > 0.045:
                 self.last_direction = -1.0
@@ -151,7 +151,7 @@ class CenterQr(Node):
                 self.last_speed = 5.0
                 self.get_logger().info('reach rigth side')
         
-        #Letzte bewegung wird fortgeführt
+        #Letzte Bewegung wird fortgeführt
         if self.last_direction is not None:
             if self.last_speed is None:
                     self.last_speed = 5.0

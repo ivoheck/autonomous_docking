@@ -1,5 +1,5 @@
 //https://dronebotworkshop.com/stepper-motors-with-arduino/
-// https://tutorials-raspberrypi.de/arduino-raspberry-pi-miteinander-kommunizieren-lassen/
+//https://tutorials-raspberrypi.de/arduino-raspberry-pi-miteinander-kommunizieren-lassen/
 
 #include <AccelStepper.h>
 

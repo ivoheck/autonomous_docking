@@ -21,10 +21,10 @@ class LockController(Node):
 
     def controll_lock(self,msg):
         if msg.data:
-            #open lock
+            #lock öffnen
             self.serial.write('1'.encode())
         else:
-            #close lock
+            #lock schließen
             self.serial.write('0'.encode())
 
         

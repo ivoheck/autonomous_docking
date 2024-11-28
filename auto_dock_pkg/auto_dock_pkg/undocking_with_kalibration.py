@@ -8,7 +8,6 @@ from sensor_msgs.msg import LaserScan
 from rclpy.qos import ReliabilityPolicy, QoSProfile
 from std_msgs.msg import String
 from custom_interfaces.msg import QrPos
-import time
 
 class Undock(Node):
 
@@ -46,7 +45,7 @@ class Undock(Node):
             1)
         self.subscription_start_undocking  
 
-        #Zum manulellen undocking
+        #Zum manuellen Abdocken
         if __name__ == '__main__':
             self.open_lock()
             self.timer = self.create_timer(0.1, self.start_undock)
@@ -72,7 +71,7 @@ class Undock(Node):
                 self.qr_pos_final = self.qr_pos
                 print(self.qr_pos_final)
 
-            self.controller.back(10.0)
+            self.controller.back(5.0)
 
         elif self.lidar_front is None:
             self.controller.stop()
@@ -90,7 +89,6 @@ class Undock(Node):
             self.publisher_current_ws.publish(msg_ws)
 
             self.timer.destroy()
-            #rclpy.shutdown()
 
     def listener_callback(self,msg):
         self.lidar_front = msg.ranges[0]

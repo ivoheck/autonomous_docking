@@ -28,7 +28,7 @@ class Undock(Node):
         self.status = 0
         self.lidar_offset = 0.14
 
-        #Zum manulellen undocking
+        #Zum manuellen Abdocken
         if __name__ == '__main__':
             self.open_lock()
             self.timer = self.create_timer(0.1, self.start_undock)

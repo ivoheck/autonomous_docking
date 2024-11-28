@@ -11,11 +11,11 @@ from custom_interfaces.msg import DockTrigger
 import cv2
 import time
 
-#Qr code benennung:
-# 'ws_1' (orientierungs code workespace 1)
-# '1-l' (zentrirungs code links (workspace 1))
-# '1-m' (zentrirungs code mitte (workspace 1))
-# '1-r' (zentrirungs code rechts (workspace 1))
+#QR-Code-Benennung.:
+# 'ws_1' (Orientierungscode Workspace 1)
+# '1-l' (Zentrierungscode links (Workspace 1))
+# '1-m' (Zentrierungscode Mitte (Workspace 1))
+# '1-r' (Zentrierungscode rechts (Workspace 1))
 
 class QrScan(Node):
 
@@ -26,7 +26,7 @@ class QrScan(Node):
 
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/qr_scan_node',
+            'dock_trigger/qr_scan_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_node_state
@@ -65,12 +65,6 @@ class QrScan(Node):
         self.get_logger().info(f'qr scan avg hz: {1/(self.timer_time/self.timer_iteration)}')
         self.timer_time = 0
         self.timer_iteration = 0
-
-        #Dies soll sicherstellen das keine verhalteten informationen auf dem topic verbleiben
-        msg = QrPos()
-        msg.offset = 0.0
-        msg.qrcode = ''
-        self.publisher_.publish(msg)
 
 
     def callc_possition_t_c(self,points,mid_target,identifier):
@@ -123,13 +117,12 @@ class QrScan(Node):
         
     def scan(self,img):
         try:
-            mid_target = int(img.shape[1]/2)#horizontaler mittelpunkt
+            mid_target = int(img.shape[1]/2)#horizontaler Mittelpunkt
 
             detector = cv2.QRCodeDetector()
             retval, decoded_info, points, straight_qrcode = detector.detectAndDecodeMulti(img)
-            #print(decoded_info)
 
-            #Wenn kein code gefunden wrde wird None returned
+            #Wenn kein Code gefunden wurde wird None zurückgegeben
             if not retval:
                 return None
 
@@ -147,10 +140,6 @@ class QrScan(Node):
                 index = decoded_info.index(qr_mid)
                 return self.callc_possition_t_c(points[index],mid_target,'c')
 
-            #TODO: evtl diesen case extra betrachten
-            #elif qr_left in decoded_info and qr_rigth in decoded_info:
-            #    pass
-    
             elif qr_left in decoded_info:
                 index = decoded_info.index(qr_left)
                 return self.callc_possition_r_l(points[index],mid_target,'l')
@@ -159,7 +148,7 @@ class QrScan(Node):
                 index = decoded_info.index(qr_rigth)
                 return self.callc_possition_r_l(points[index],mid_target,'r')
 
-            #Es wurde codes gefunden aber nicht die passenden dieser fall wird gewerte wie als wenn keiner gefunden wurde
+            #Es wurde kein passender Code gefunden
             else:
                 return None
         except:
@@ -180,7 +169,7 @@ class QrScan(Node):
                     self.publisher_.publish(msg)
 
                 else:
-                    #Default Massage wenn kein code gefunden werden kann
+                    #Default-Massage wenn kein Code gefunden werden kann
                     msg.offset = 0.0
                     msg.qrcode = ''
                     self.publisher_.publish(msg)

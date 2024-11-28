@@ -22,13 +22,13 @@ class DockingManager(Node):
             1)
         self.subscription_dock_feedback
 
-        self.publisher_find_qr_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/find_qr_node', 1)
-        self.publisher_drive_to_qr_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/drive_to_qr_node', 1)
-        self.publisher_face_wall_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/face_wall_node', 1)
-        self.publisher_drive_to_wall_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/drive_to_wall_node', 1)
-        self.publisher_qr_center_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/qr_center_node', 1)
-        self.publisher_final_docking_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/final_docking_node', 1)
-        self.publisher_qr_scan_node_state = self.create_publisher(DockTrigger,'trigger_dock_node/qr_scan_node', 1)
+        self.publisher_find_qr_node_state = self.create_publisher(DockTrigger,'dock_trigger/find_qr_trigger', 1)
+        self.publisher_drive_to_qr_node_state = self.create_publisher(DockTrigger,'dock_trigger/drive_to_qr_trigger', 1)
+        self.publisher_face_wall_node_state = self.create_publisher(DockTrigger,'dock_trigger/face_wall_trigger', 1)
+        self.publisher_drive_to_wall_node_state = self.create_publisher(DockTrigger,'dock_trigger/drive_to_wall_trigger', 1)
+        self.publisher_qr_center_node_state = self.create_publisher(DockTrigger,'dock_trigger/qr_center_trigger', 1)
+        self.publisher_final_docking_node_state = self.create_publisher(DockTrigger,'dock_trigger/final_docking_trigger', 1)
+        self.publisher_qr_scan_node_state = self.create_publisher(DockTrigger,'dock_trigger/qr_scan_trigger', 1)
         self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
         self.publisher_current_ws = self.create_publisher(String, '/current_ws', 1)
 

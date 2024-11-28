@@ -16,7 +16,6 @@ class FinalDocking(Node):
     def __init__(self):
         super().__init__('final_dock')
         
-        #self.probe_tollerace = 20
         self.publisher_lock = self.create_publisher(Bool, '/lock', 1)
         self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
         self.publisher_start_docking = self.create_publisher(DockTrigger, '/start_dock', 1)
@@ -32,7 +31,7 @@ class FinalDocking(Node):
         
         self.subscription_node_state = self.create_subscription(
             DockTrigger,
-            'trigger_dock_node/final_docking_node',
+            'dock_trigger/final_docking_trigger',
             self.listener_callback_manage_node_state,
             1)
         self.subscription_node_state
