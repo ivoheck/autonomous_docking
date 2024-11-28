@@ -95,7 +95,7 @@ class DriveToQr(Node):
             self.stop_node()
             return
 
-        self.get_logger().debug(str(msg))
+        self.get_logger().info(str(msg))
 
         #Überprüfen ob die Station schon erreicht ist
         if self.lidar_msg is not None:
@@ -112,34 +112,34 @@ class DriveToQr(Node):
                 self.stop_node()
                 return
             
-            self.get_logger().debug(str(front_dist))
+            self.get_logger().info(str(front_dist))
 
         if msg.qrcode != '':
             #Es wurde ein Code gefunden
             self.qr_found = True
             if abs(msg.offset) <= self.tollerace:
                 self.controller.front(20.0)
-                self.get_logger().debug('front')
+                self.get_logger().info('front')
                 return
 
             else:
                 if msg.offset > 0.0:
                     self.controller.drive_curve(direction=1.0,percent_x=20.0,percent_z=6.0)
-                    self.get_logger().debug('links')
+                    self.get_logger().info('links')
                     return
                 else:
                     self.controller.drive_curve(direction=-1.0,percent_x=20.0,percent_z=6.0)
-                    self.get_logger().debug('rechts')
+                    self.get_logger().info('rechts')
                     return
         
         #Fals QR-Code schon einmal gefunden wurde
         if self.qr_found:
             self.controller.front(20.0)
-            self.get_logger().debug('front')
+            self.get_logger().info('front')
         else:
             #Roboter beginnt sofort geradeaus zu fahren
             self.controller.front(5.0)
-            self.get_logger().debug('front langsam')
+            self.get_logger().info('front langsam')
 
 
 

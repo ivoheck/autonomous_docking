@@ -94,7 +94,7 @@ class FaceWall(Node):
             return
 
         diff = l_value -r_value
-        print(l_value,r_value, diff)
+        self.get_logger().info(f'{l_value},{r_value}, {diff}')
         
         diff -= self.lidar_offset
 
@@ -112,8 +112,10 @@ class FaceWall(Node):
         else:
             if diff > 0:
                 self.controller.turn_right(percent=3.0)
+                self.get_logger().info('turn right')
             else:
                 self.controller.turn_left(percent=3.0)
+                self.get_logger().info('turn left')
                 
 
 def main(args=None):

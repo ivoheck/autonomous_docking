@@ -21,19 +21,19 @@ class FindQr(Node):
         self.publisher_current_state = self.create_publisher(String, '/current_state', 1)
         self.publisher_node_state = self.create_publisher(DockFeedback, '/dock_feedback', 1)
 
-        self.subscription = self.create_subscription(
+        self.subscription_node_state = self.create_subscription(
             DockTrigger,
             'dock_trigger/find_qr_trigger',
             self.listener_callback_manage_node_state,
             1)
-        self.subscription
+        self.subscription_node_state
 
-        self.subscription = self.create_subscription(
+        self.subscription_qr_pos = self.create_subscription(
             QrPos,
             '/qr_pos',
             self.listener_callback,
             1)
-        self.subscription
+        self.subscription_qr_pos
 
         self.state = True
         self.time_state = True
@@ -68,7 +68,6 @@ class FindQr(Node):
 
     def stop_node(self):
         self.get_logger().debug('stop find_qr_node')
-        self.subscription = None
 
         self.state = True
         self.time_state = True
@@ -116,18 +115,20 @@ class FindQr(Node):
             if self.last_offset is None:
                 #Wenn noch nie ein Code gefunden wurde, wird im Uhrzeigersinn gedreht
                 self.controller.turn_left(20.0)
-                self.get_logger().debug('turn left')
+                self.get_logger().info('turn left')
                 return
 
             if self.last_offset > 0.0:
                 self.controller.turn_left(5.0)
-                self.get_logger().debug('turn left slow')
+                self.get_logger().info('turn left slow (last_offset)')
                 return
 
             if self.last_offset < 0.0:
                 self.controller.turn_right(5.0)
-                self.get_logger().debug('turn right slow')
+                self.get_logger().info('turn right slow (last_offset)')
                 return
+
+            return
             
 
         
@@ -157,7 +158,7 @@ class FindQr(Node):
                 self.get_logger().info('turn left')
                 return
 
-        elif msg.offset < 0.0:
+        elif msg.offset <= 0.0:
             self.qr_state = True
             self.last_offset = msg.offset 
             if abs(msg.offset) < 0.1:

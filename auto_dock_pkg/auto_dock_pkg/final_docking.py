@@ -95,13 +95,14 @@ class FinalDocking(Node):
             return
         
         lidar_front = self.lidar_ranges[0]
+        self.get_logger().info(str(lidar_front))
 
         self.lidar_list.append(lidar_front)
 
         if len(self.lidar_list) > self.check_value_len:
             self.lidar_list.pop(0)
 
-            print(abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) )
+            #self.get_logger().info(str(abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) ))
             if abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) < self.check_value_dis:
                 self.close_lock()
                 self.controller.stop()
@@ -122,11 +123,11 @@ class FinalDocking(Node):
             self.open_lock()
             self.controller.front(percent=10.0)
 
-        elif lidar_front >= 0.167: 
+        elif lidar_front >= 0.162: 
             self.controller.front(percent=100.0)
 
         #Docking erfolgreich
-        elif lidar_front < 0.167:
+        elif lidar_front < 0.162:
             self.close_lock()
             self.controller.stop()
 
