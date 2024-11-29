@@ -109,6 +109,10 @@ class FinalDocking(Node):
             return
         
         lidar_front = self.lidar_ranges[0]
+
+        if lidar_front is None:
+            return
+        
         self.get_logger().debug(str(lidar_front))
 
         self.lidar_list.append(lidar_front)
