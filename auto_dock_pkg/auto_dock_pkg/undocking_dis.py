@@ -26,23 +26,29 @@ class Undock(Node):
         self.subscription  
         self.lidar_front = None
         self.status = 0
-        self.lidar_offset = 0.14
+        self.lidar_offset = 0.15825000405311584 #Distanzwert vom Lidar bis zur station bei gedocktem zustand 
 
         #Zum manuellen Abdocken
         if __name__ == '__main__':
+            self.distance = float(input('distance: '))
+            print(self.distance)
             self.open_lock()
             self.timer = self.create_timer(0.1, self.start_undock)
 
     def start_undock(self):
-        print(self.lidar_front)
+        print(self.lidar_front, 'goal: ', self.distance)
         if self.lidar_front is None or self.lidar_front == inf:
             return
 
-        if self.lidar_front > 0.7 + self.lidar_offset:
-            print('final: ',self.lidar_front - self.lidar_offset)
+        if self.lidar_front > self.distance + self.lidar_offset:
             self.controller.stop()
+            print('final: ',self.lidar_front - self.lidar_offset)
             self.close_lock()
             self.timer.destroy()
+
+        elif self.lidar_front > (self.distance + self.lidar_offset) - 0.05:
+            self.controller.back(5.0)
+            print('slowing down')
             
         else:
             self.controller.back(10.0)

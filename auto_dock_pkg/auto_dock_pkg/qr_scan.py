@@ -37,9 +37,6 @@ class QrScan(Node):
         self.timer_time = 0
         self.timer_iteration = 0
 
-        if __name__ == '__main__':
-            self.goal_ws_nr = 1
-            self.start_node()
 
     def listener_callback_manage_node_state(self,msg):
         if msg.trigger:

@@ -47,10 +47,6 @@ class FaceWall(Node):
         self.dock_time = None
         self.node_state = False
 
-        if __name__ == '__main__':
-            self.start_node()
-            self.dock_time = time.time()
-
 
     def listener_callback_manage_node_state(self, msg):
         if msg.trigger:
@@ -94,7 +90,7 @@ class FaceWall(Node):
             return
 
         diff = l_value -r_value
-        self.get_logger().info(f'{l_value},{r_value}, {diff}')
+        self.get_logger().debug(f'{l_value},{r_value}, {diff}')
         
         diff -= self.lidar_offset
 
@@ -112,10 +108,10 @@ class FaceWall(Node):
         else:
             if diff > 0:
                 self.controller.turn_right(percent=3.0)
-                self.get_logger().info('turn right')
+                self.get_logger().debug('turn right')
             else:
                 self.controller.turn_left(percent=3.0)
-                self.get_logger().info('turn left')
+                self.get_logger().debug('turn left')
                 
 
 def main(args=None):

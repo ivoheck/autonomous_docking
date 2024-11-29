@@ -51,9 +51,6 @@ class CenterQr(Node):
         self.dock_time = None
         self.node_state = False
 
-        if __name__ == '__main__':
-            print('test')
-            self.start_node()
 
     def listener_callback_manage_node_state(self, msg):
         if msg.trigger:
@@ -114,21 +111,21 @@ class CenterQr(Node):
             self.controller.front(percent=5.0)
             return
 
-        self.get_logger().info(str(msg))
+        self.get_logger().debug(str(msg))
 
         #Überprüfung ob ein QR-Code in aktueller Iteration gefunden wurde
         if msg.qrcode == 'l':
             self.last_direction = -1.0
             self.last_speed = 5.0
             self.controller.right(percent=5.0)
-            self.get_logger().info('rechts')
+            self.get_logger().debug('rechts')
             return
         
         if msg.qrcode == 'r':
             self.last_direction = 1.0
             self.last_speed = 5.0
             self.controller.left(percent=5.0)
-            self.get_logger().info('links')
+            self.get_logger().debug('links')
             return
         
         if msg.qrcode == 'c':
@@ -140,7 +137,7 @@ class CenterQr(Node):
         #Hier wird überprüft, ob der Roboter rechts oder links an der Station vorbeifährt
         if self.lidar_right is not None and self.lidar_left is not None:
             #Wenn der Roboter zu weit links ist muss das Zentrum rechts sein
-            self.get_logger().info(f'offset: {self.lidar_left - self.lidar_right}')
+            self.get_logger().debug(f'offset: {self.lidar_left - self.lidar_right}')
             if self.lidar_left - self.lidar_right > 0.045:
                 self.last_direction = -1.0
                 self.last_speed = 5.0
@@ -158,16 +155,16 @@ class CenterQr(Node):
 
             if self.last_direction == -1.0:
                 self.controller.right(percent=self.last_speed)
-                self.get_logger().info(f'rechts {self.last_speed}')
+                self.get_logger().debug(f'rechts {self.last_speed}')
                 return
 
             elif self.last_direction == 1.0:
                 self.controller.left(percent=self.last_speed)
-                self.get_logger().info(f'links {self.last_speed}')
+                self.get_logger().debug(f'links {self.last_speed}')
                 return
         else:
             #Wenn noch nichts gefunden wurde fährt der Roboter nach links
-            self.get_logger().info('no qr found driving left')
+            self.get_logger().debug('no qr found driving left')
             self.last_direction = 1.0
             self.last_speed = 5.0
 
@@ -188,21 +185,21 @@ class CenterQr(Node):
         elif offset > 0.02 + self.goal_offset:
             if offset > 0.3 + self.goal_offset:
                 self.controller.left(percent=5.0)
-                self.get_logger().info('links')
+                self.get_logger().debug('links')
                 return 1.0,5.0
             else:
                 self.controller.left(percent=1.0)
-                self.get_logger().info('links langsam')
+                self.get_logger().debug('links langsam')
                 return 1.0,1.0
 
         else:
             if offset < -0.3 +self.goal_offset:
                 self.controller.right(percent=5.0)
-                self.get_logger().info('rechts')
+                self.get_logger().debug('rechts')
                 return -1.0,5.0
             else:
                 self.controller.right(percent=1.0)
-                self.get_logger().info('rechts langsam')
+                self.get_logger().debug('rechts langsam')
                 return -1.0,1.0
 
 

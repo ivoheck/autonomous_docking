@@ -37,9 +37,10 @@ class FinalDocking(Node):
         self.subscription_node_state
         
         self.lidar_subscription
+
         self.lidar_ranges = None
         self.lidar_list = []
-        self.check_value_len = 15
+        self.check_value_len = 25
         self.check_value_dis = 0.001
         self.dock_time = None
         self.node_state = False
@@ -53,11 +54,24 @@ class FinalDocking(Node):
 
     def start_node(self):
         self.node_state = True
+
+        self.lidar_ranges = None
+        self.lidar_list = []
+        self.check_value_len = 25
+        self.check_value_dis = 0.001
+        self.dock_time = None
+        
         self.time_start = time.time()
         self.timer = self.create_timer(0.1, self.docking)
 
     def stop_node(self):
         self.node_state = False
+
+        self.lidar_ranges = None
+        self.lidar_list = []
+        self.check_value_len = 25
+        self.check_value_dis = 0.001
+        self.dock_time = None
 
         try:
             self.timer.destroy()
@@ -95,7 +109,7 @@ class FinalDocking(Node):
             return
         
         lidar_front = self.lidar_ranges[0]
-        self.get_logger().info(str(lidar_front))
+        self.get_logger().debug(str(lidar_front))
 
         self.lidar_list.append(lidar_front)
 
@@ -105,6 +119,7 @@ class FinalDocking(Node):
             #self.get_logger().info(str(abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) ))
             if abs(self.lidar_list[0] - self.lidar_list[self.check_value_len -1]) < self.check_value_dis:
                 self.close_lock()
+                self.get_logger().info('docking fail')
                 self.controller.stop()
   
                 msg_dock_feedback = DockFeedback()
@@ -117,17 +132,18 @@ class FinalDocking(Node):
                 return
 
         if (lidar_front >= 0.185 or lidar_front == 'inf'):
-            self.controller.front(percent=5.0)
+            self.controller.front(percent=10.0)
 
         elif lidar_front >= 0.175: 
             self.open_lock()
-            self.controller.front(percent=10.0)
+            self.controller.front(percent=30.0)
 
         elif lidar_front >= 0.162: 
             self.controller.front(percent=100.0)
 
         #Docking erfolgreich
         elif lidar_front < 0.162:
+            self.get_logger().info('docking success')
             self.close_lock()
             self.controller.stop()
 

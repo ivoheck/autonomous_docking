@@ -36,19 +36,19 @@ class DockingManager(Node):
         self.current_dock_state = None
         self.current_ws = None
 
-        if __name__ == '__main__':
-            msg_find_qr = DockTrigger()
-            msg_find_qr.trigger = True
-            msg_find_qr.time = int(time.time())
-            self.current_dock_stamp = int(time.time())
-            self.current_dock_state = 'find_qr'
-
-            msg_qr_scan = DockTrigger()
-            msg_qr_scan.trigger = True
-            msg_qr_scan.wsnumber = 1
-
-            self.publisher_qr_scan_node_state.publish(msg=msg_qr_scan)
-            self.publisher_find_qr_node_state.publish(msg=msg_find_qr)
+        #if __name__ == '__main__':
+        #    msg_find_qr = DockTrigger()
+        #    msg_find_qr.trigger = True
+        #    msg_find_qr.time = int(time.time())
+        #    self.current_dock_stamp = int(time.time())
+        #    self.current_dock_state = 'find_qr'
+        #    
+        #    msg_qr_scan = DockTrigger()
+        #    msg_qr_scan.trigger = True
+        #    msg_qr_scan.wsnumber = 1
+        #
+        #    self.publisher_qr_scan_node_state.publish(msg=msg_qr_scan)
+        #    self.publisher_find_qr_node_state.publish(msg=msg_find_qr)
 
     def stop_all_processes(self):
         msg = DockTrigger()
@@ -63,6 +63,10 @@ class DockingManager(Node):
         self.publisher_final_docking_node_state.publish(msg=msg)
 
         self.get_logger().error('Shudown all Docking Nodes')
+
+        self.current_dock_stamp = None
+        self.current_dock_state = None
+        self.current_ws = None
         
 
     def listener_callback_dock_feedback(self,msg):
@@ -213,8 +217,10 @@ class DockingManager(Node):
 
     def listener_callback_start_dock(self,msg):
         if msg.trigger:
+            self.current_ws = msg.wsnumber
 
             self.get_logger().info('starting qr_scan')
+
             msg_qr_scan = DockTrigger()
             msg_qr_scan.trigger = True
             msg_qr_scan.wsnumber = msg.wsnumber

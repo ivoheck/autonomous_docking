@@ -32,11 +32,6 @@ class Undock(Node):
             1)
         self.subscription_start_undocking  
 
-        #Zum manuellen Abdocken
-        if __name__ == '__main__':
-            self.open_lock()
-            self.timer = self.create_timer(0.1, self.start_undock)
-
     def listener_callback_start_undocking(self,msg):
         if msg.data:
             self.open_lock()
@@ -56,6 +51,8 @@ class Undock(Node):
         else:
             self.controller.stop()
             self.close_lock()
+
+            self.get_logger().info('undocking success')
 
             msg_state = String()
             msg_state.data = 'waiting'

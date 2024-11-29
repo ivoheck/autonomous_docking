@@ -1,0 +1,399 @@
+[docking_manager_node-12] [INFO] [1732895010.137136804] [docking_manager]: starting qr_scan
+[docking_manager_node-12] [INFO] [1732895010.165933491] [docking_manager]: starting find_qr
+[find_qr_node-5] [INFO] [1732895011.651086909] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895011.684521792] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895011.698679452] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895011.713888380] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895011.905199563] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895011.940840147] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895012.236386238] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895012.290854104] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895012.552805165] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895012.600538374] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895012.912407179] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895012.944521630] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895013.207557125] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895013.216314726] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895013.521517521] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895013.559135715] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895013.913819387] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895013.931817529] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895014.292118462] [find_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[find_qr_node-5] [INFO] [1732895014.311178761] [find_qr]: turn left
+[find_qr_node-5] [INFO] [1732895014.714164432] [find_qr]: custom_interfaces.msg.QrPos(offset=0.19744929075241088, qrcode='t')
+[find_qr_node-5] [INFO] [1732895014.765964602] [find_qr]: turn left slow
+[find_qr_node-5] [INFO] [1732895015.141925237] [find_qr]: custom_interfaces.msg.QrPos(offset=0.1356899380683899, qrcode='t')
+[find_qr_node-5] [INFO] [1732895015.172213298] [find_qr]: turn left slow
+[find_qr_node-5] [INFO] [1732895015.659635160] [find_qr]: custom_interfaces.msg.QrPos(offset=0.06470204591751098, qrcode='t')
+[find_qr_node-5] [INFO] [1732895015.696892729] [find_qr]: QR Found
+[docking_manager_node-12] [INFO] [1732895015.724433353] [docking_manager]: find_qr success
+[docking_manager_node-12] [INFO] [1732895015.756532268] [docking_manager]: starting drive_to_qr
+[drive_to_qr_node-6] [INFO] [1732895017.004535872] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.011511564254760742, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895017.012869589] [drive_to_qr]: inf
+[drive_to_qr_node-6] [INFO] [1732895017.025189359] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895017.070755663] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.07690675258636474, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895017.083825779] [drive_to_qr]: 0.8374999761581421
+[drive_to_qr_node-6] [INFO] [1732895017.094716767] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895017.594201717] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.16462349891662598, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895017.608220194] [drive_to_qr]: inf
+[drive_to_qr_node-6] [INFO] [1732895017.629467398] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895018.099929071] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.19622788429260254, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895018.109104020] [drive_to_qr]: 0.7944999933242798
+[drive_to_qr_node-6] [INFO] [1732895018.121605215] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895018.592245368] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.22271664142608644, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895018.604565713] [drive_to_qr]: 0.778249979019165
+[drive_to_qr_node-6] [INFO] [1732895018.647277915] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895019.185077943] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.222910737991333, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895019.194018431] [drive_to_qr]: 0.7572500109672546
+[drive_to_qr_node-6] [INFO] [1732895019.206804086] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895019.609877184] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.22504284381866455, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895019.661786983] [drive_to_qr]: 0.7457500100135803
+[drive_to_qr_node-6] [INFO] [1732895019.677156132] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895020.097846801] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.2010166883468628, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895020.110779881] [drive_to_qr]: 0.7260000109672546
+[drive_to_qr_node-6] [INFO] [1732895020.142639613] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895020.509702834] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.1710716724395752, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895020.517096522] [drive_to_qr]: 0.7110000252723694
+[drive_to_qr_node-6] [INFO] [1732895020.578649969] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895021.105918173] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.13659274578094482, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895021.139512128] [drive_to_qr]: 0.6952499747276306
+[drive_to_qr_node-6] [INFO] [1732895021.150715817] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895021.619864689] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.1063159465789795, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895021.655730160] [drive_to_qr]: 0.6784999966621399
+[drive_to_qr_node-6] [INFO] [1732895021.709922659] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895022.186973326] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.07893714904785157, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895022.206319493] [drive_to_qr]: 0.6549999713897705
+[drive_to_qr_node-6] [INFO] [1732895022.215882568] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895022.632049467] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.046457099914550784, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895022.686385890] [drive_to_qr]: 0.6485000252723694
+[drive_to_qr_node-6] [INFO] [1732895022.695018622] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895023.133129533] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.02082338333129883, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895023.182696373] [drive_to_qr]: 0.6365000009536743
+[drive_to_qr_node-6] [INFO] [1732895023.192127912] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895023.711420656] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.016467642784118653, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895023.738857374] [drive_to_qr]: 0.6167500019073486
+[drive_to_qr_node-6] [INFO] [1732895023.828644125] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895024.106252834] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.05409038066864014, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895024.113842669] [drive_to_qr]: 0.6069999933242798
+[drive_to_qr_node-6] [INFO] [1732895024.143964269] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895024.681860427] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.08850294351577759, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895024.700039568] [drive_to_qr]: 0.5929999947547913
+[drive_to_qr_node-6] [INFO] [1732895024.790994066] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895025.270700690] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[drive_to_qr_node-6] [INFO] [1732895025.291770451] [drive_to_qr]: 0.5734999775886536
+[drive_to_qr_node-6] [INFO] [1732895025.382180862] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895025.803777414] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.13330804109573363, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895025.835385500] [drive_to_qr]: 0.5674999952316284
+[drive_to_qr_node-6] [INFO] [1732895025.907952748] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895026.107470392] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.1362027645111084, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895026.198231299] [drive_to_qr]: 0.5475000143051147
+[drive_to_qr_node-6] [INFO] [1732895026.212242036] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895026.596090301] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.1413367509841919, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895026.698300025] [drive_to_qr]: 0.5370000004768372
+[drive_to_qr_node-6] [INFO] [1732895026.812541486] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895027.141674035] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.11533864736557006, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895027.193963478] [drive_to_qr]: 0.5235000252723694
+[drive_to_qr_node-6] [INFO] [1732895027.214348745] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895027.682841292] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.07688062191009522, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895027.705677740] [drive_to_qr]: 0.515500009059906
+[drive_to_qr_node-6] [INFO] [1732895027.733449622] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895028.189508936] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.07222422361373901, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895028.198529776] [drive_to_qr]: 0.5067499876022339
+[drive_to_qr_node-6] [INFO] [1732895028.211972055] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895028.616862489] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.06225552558898926, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895028.688989279] [drive_to_qr]: 0.49399998784065247
+[drive_to_qr_node-6] [INFO] [1732895028.712203186] [drive_to_qr]: links
+[drive_to_qr_node-6] [INFO] [1732895029.225440509] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.03707176446914673, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895029.277238160] [drive_to_qr]: 0.484499990940094
+[drive_to_qr_node-6] [INFO] [1732895029.286935623] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895029.693205748] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.003351151943206787, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895029.701770462] [drive_to_qr]: 0.4749999940395355
+[drive_to_qr_node-6] [INFO] [1732895029.711095484] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895030.137603841] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.0332047700881958, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895030.184337542] [drive_to_qr]: 0.4595000147819519
+[drive_to_qr_node-6] [INFO] [1732895030.200104724] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895030.593543232] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.06770548820495606, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895030.610445644] [drive_to_qr]: 0.44200000166893005
+[drive_to_qr_node-6] [INFO] [1732895030.670155942] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895031.169859894] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.10134413242340087, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895031.179178509] [drive_to_qr]: 0.4309999942779541
+[drive_to_qr_node-6] [INFO] [1732895031.196111958] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895031.630725460] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.14179444313049316, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895031.642200572] [drive_to_qr]: 0.41725000739097595
+[drive_to_qr_node-6] [INFO] [1732895031.693481711] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895032.195363791] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.15504035949707032, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895032.209126214] [drive_to_qr]: 0.4009999930858612
+[drive_to_qr_node-6] [INFO] [1732895032.250874481] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895032.826164062] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.1579432010650635, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895032.845658338] [drive_to_qr]: 0.3840000033378601
+[drive_to_qr_node-6] [INFO] [1732895032.887360901] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895033.377740018] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.16312179565429688, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895033.406020358] [drive_to_qr]: 0.3682500123977661
+[drive_to_qr_node-6] [INFO] [1732895033.483444783] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895033.876004263] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.1372300148010254, qrcode='t')
+[drive_to_qr_node-6] [INFO] [1732895033.896349734] [drive_to_qr]: 0.351500004529953
+[drive_to_qr_node-6] [INFO] [1732895033.907338185] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895034.293657039] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[drive_to_qr_node-6] [INFO] [1732895034.303752887] [drive_to_qr]: 0.34299999475479126
+[drive_to_qr_node-6] [INFO] [1732895034.312657450] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895034.534561379] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[drive_to_qr_node-6] [INFO] [1732895034.584399161] [drive_to_qr]: 0.3319999873638153
+[drive_to_qr_node-6] [INFO] [1732895034.604416136] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895035.244449227] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.6502152204513549, qrcode='r')
+[drive_to_qr_node-6] [INFO] [1732895035.285783072] [drive_to_qr]: 0.3149999976158142
+[drive_to_qr_node-6] [INFO] [1732895035.294472581] [drive_to_qr]: rechts
+[drive_to_qr_node-6] [INFO] [1732895035.605558342] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[drive_to_qr_node-6] [INFO] [1732895035.615494654] [drive_to_qr]: 0.30000001192092896
+[drive_to_qr_node-6] [INFO] [1732895035.626163126] [drive_to_qr]: front
+[drive_to_qr_node-6] [INFO] [1732895036.308927493] [drive_to_qr]: custom_interfaces.msg.QrPos(offset=-0.6281444072723389, qrcode='r')
+[docking_manager_node-12] [INFO] [1732895036.384118958] [docking_manager]: drive_to_qr success
+[docking_manager_node-12] [INFO] [1732895036.396890576] [docking_manager]: starting face_wall
+[face_wall_node-8] [INFO] [1732895037.184636883] [face_wall]: 1.3869999945163727,1.362500011920929, 0.024499982595443726
+[face_wall_node-8] [INFO] [1732895037.205345295] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.231041864] [face_wall]: 1.3849999904632568,1.3519999980926514, 0.03299999237060547
+[face_wall_node-8] [INFO] [1732895037.256046810] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.304059535] [face_wall]: 1.3849999606609344,1.3570000231266022, 0.027999937534332275
+[face_wall_node-8] [INFO] [1732895037.347030401] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.407930170] [face_wall]: 1.3824999630451202,1.3510000109672546, 0.0314999520778656
+[face_wall_node-8] [INFO] [1732895037.425730425] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.450112580] [face_wall]: 1.3760000169277191,1.3597500026226044, 0.016250014305114746
+[face_wall_node-8] [INFO] [1732895037.502279840] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.543149745] [face_wall]: 1.3822500109672546,1.350000023841858, 0.03224998712539673
+[face_wall_node-8] [INFO] [1732895037.555721476] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.573638768] [face_wall]: 1.3779999613761902,1.354999989271164, 0.022999972105026245
+[face_wall_node-8] [INFO] [1732895037.582640478] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.594160534] [face_wall]: 1.3777499794960022,1.3494999706745148, 0.028250008821487427
+[face_wall_node-8] [INFO] [1732895037.603845812] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.675028815] [face_wall]: 1.3777500092983246,1.351500004529953, 0.026250004768371582
+[face_wall_node-8] [INFO] [1732895037.715294948] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.794626651] [face_wall]: 1.3710000216960907,1.3519999980926514, 0.01900002360343933
+[face_wall_node-8] [INFO] [1732895037.817351933] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.889952793] [face_wall]: 1.3722499907016754,1.3517500162124634, 0.020499974489212036
+[face_wall_node-8] [INFO] [1732895037.898422638] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895037.949737628] [face_wall]: 1.3677500486373901,1.3525000214576721, 0.015250027179718018
+[face_wall_node-8] [INFO] [1732895037.973931452] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.066955857] [face_wall]: 1.3677500486373901,1.3467499613761902, 0.02100008726119995
+[face_wall_node-8] [INFO] [1732895038.111250896] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.298912710] [face_wall]: 1.3729999959468842,1.3570000231266022, 0.015999972820281982
+[face_wall_node-8] [INFO] [1732895038.372321081] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.411137228] [face_wall]: 1.3644999861717224,1.3527499735355377, 0.011750012636184692
+[face_wall_node-8] [INFO] [1732895038.514372850] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.664568078] [face_wall]: 1.3654999732971191,1.354500025510788, 0.010999947786331177
+[face_wall_node-8] [INFO] [1732895038.676671333] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.850374780] [face_wall]: 1.3689999878406525,1.3534999787807465, 0.015500009059906006
+[face_wall_node-8] [INFO] [1732895038.864427368] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895038.951740068] [face_wall]: 1.3639999628067017,1.3564999997615814, 0.007499963045120239
+[face_wall_node-8] [INFO] [1732895038.975944170] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895039.049795407] [face_wall]: 1.36599999666214,1.3505000174045563, 0.015499979257583618
+[face_wall_node-8] [INFO] [1732895039.089489045] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895039.351363556] [face_wall]: 1.367499977350235,1.3517500162124634, 0.015749961137771606
+[face_wall_node-8] [INFO] [1732895039.382186798] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895039.447792169] [face_wall]: 1.3624999821186066,1.3537500202655792, 0.008749961853027344
+[face_wall_node-8] [INFO] [1732895039.484386412] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895039.787724173] [face_wall]: 1.3675000071525574,1.3537499606609344, 0.013750046491622925
+[face_wall_node-8] [INFO] [1732895039.863293838] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895039.928849636] [face_wall]: 1.3717500269412994,1.3505000174045563, 0.021250009536743164
+[face_wall_node-8] [INFO] [1732895039.951596456] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895040.072507705] [face_wall]: 1.3665000200271606,1.3557499945163727, 0.010750025510787964
+[face_wall_node-8] [INFO] [1732895040.093703150] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895040.442916473] [face_wall]: 1.3640000224113464,1.3502499461174011, 0.013750076293945312
+[face_wall_node-8] [INFO] [1732895040.490873476] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895040.666085947] [face_wall]: 1.362749993801117,1.3499999940395355, 0.012749999761581421
+[face_wall_node-8] [INFO] [1732895040.726412147] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895040.873917734] [face_wall]: 1.3627500236034393,1.3544999659061432, 0.008250057697296143
+[face_wall_node-8] [INFO] [1732895040.924564897] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895040.992330007] [face_wall]: 1.3637499809265137,1.355249971151352, 0.008500009775161743
+[face_wall_node-8] [INFO] [1732895041.045090336] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895041.084529736] [face_wall]: 1.362500011920929,1.3525000214576721, 0.009999990463256836
+[face_wall_node-8] [INFO] [1732895041.111839641] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895041.144263904] [face_wall]: 1.365500032901764,1.351749986410141, 0.013750046491622925
+[face_wall_node-8] [INFO] [1732895041.178272264] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895041.302530315] [face_wall]: 1.3589999973773956,1.3537500202655792, 0.005249977111816406
+[face_wall_node-8] [INFO] [1732895041.320291997] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895041.464507708] [face_wall]: 1.360999971628189,1.3520000278949738, 0.008999943733215332
+[face_wall_node-8] [INFO] [1732895041.510337862] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895041.687643423] [face_wall]: 1.359499990940094,1.3499999940395355, 0.009499996900558472
+[face_wall_node-8] [INFO] [1732895041.805665163] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.003570676] [face_wall]: 1.356249988079071,1.3504999876022339, 0.005750000476837158
+[face_wall_node-8] [INFO] [1732895042.133485524] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.195356932] [face_wall]: 1.3595000207424164,1.3490000367164612, 0.0104999840259552
+[face_wall_node-8] [INFO] [1732895042.489257803] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.591666933] [face_wall]: 1.3542500138282776,1.3522500395774841, 0.001999974250793457
+[face_wall_node-8] [INFO] [1732895042.610721862] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.704378058] [face_wall]: 1.356749951839447,1.352999985218048, 0.0037499666213989258
+[face_wall_node-8] [INFO] [1732895042.717783578] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.744762949] [face_wall]: 1.3572500050067902,1.3520000278949738, 0.005249977111816406
+[face_wall_node-8] [INFO] [1732895042.771474526] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.895755392] [face_wall]: 1.3570000231266022,1.34825000166893, 0.00875002145767212
+[face_wall_node-8] [INFO] [1732895042.931210553] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895042.963311430] [face_wall]: 1.3640000224113464,1.351999968290329, 0.012000054121017456
+[face_wall_node-8] [INFO] [1732895043.001614915] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895043.033247113] [face_wall]: 1.3552500307559967,1.348499983549118, 0.006750047206878662
+[face_wall_node-8] [INFO] [1732895043.043276498] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895043.073623356] [face_wall]: 1.3584999740123749,1.3514999747276306, 0.006999999284744263
+[face_wall_node-8] [INFO] [1732895043.088871506] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895043.241169862] [face_wall]: 1.3569999635219574,1.3517500162124634, 0.0052499473094940186
+[face_wall_node-8] [INFO] [1732895043.280990722] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895043.545682595] [face_wall]: 1.3652499914169312,1.3477500081062317, 0.017499983310699463
+[face_wall_node-8] [INFO] [1732895043.573181295] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895043.677070893] [face_wall]: 1.358249992132187,1.3462499976158142, 0.01199999451637268
+[face_wall_node-8] [INFO] [1732895043.699332290] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895044.384481971] [face_wall]: 1.3579999804496765,1.3444999754428864, 0.013500005006790161
+[face_wall_node-8] [INFO] [1732895044.407576047] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895044.482043111] [face_wall]: 1.3532499969005585,1.3434999585151672, 0.009750038385391235
+[face_wall_node-8] [INFO] [1732895044.512154397] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895044.676996949] [face_wall]: 1.3522500097751617,1.3434999585151672, 0.008750051259994507
+[face_wall_node-8] [INFO] [1732895044.704329705] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895044.882546425] [face_wall]: 1.351749986410141,1.3445000052452087, 0.007249981164932251
+[face_wall_node-8] [INFO] [1732895044.908114532] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895044.975619275] [face_wall]: 1.351500004529953,1.3450000286102295, 0.006499975919723511
+[face_wall_node-8] [INFO] [1732895044.991928804] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895045.054638722] [face_wall]: 1.3507499992847443,1.3459999859333038, 0.00475001335144043
+[face_wall_node-8] [INFO] [1732895045.088105179] [face_wall]: turn right
+[face_wall_node-8] [INFO] [1732895045.266822968] [face_wall]: 1.3474999964237213,1.3462499678134918, 0.0012500286102294922
+[docking_manager_node-12] [INFO] [1732895045.290919923] [docking_manager]: face_wall success
+[docking_manager_node-12] [INFO] [1732895045.299272287] [docking_manager]: starting drive_to_wall
+[docking_manager_node-12] [INFO] [1732895048.571026801] [docking_manager]: drive_to_wall success
+[docking_manager_node-12] [INFO] [1732895048.597416437] [docking_manager]: starting qr_center
+[qr_center_node-10] [INFO] [1732895050.593869070] [center_qr]: custom_interfaces.msg.QrPos(offset=0.4664902687072754, qrcode='c')
+[qr_center_node-10] [INFO] [1732895050.676881960] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895050.697076989] [center_qr]: custom_interfaces.msg.QrPos(offset=0.47190945148468016, qrcode='c')
+[qr_center_node-10] [INFO] [1732895050.770681914] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895051.092451261] [center_qr]: custom_interfaces.msg.QrPos(offset=0.48363822102546694, qrcode='c')
+[qr_center_node-10] [INFO] [1732895051.193110186] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895051.686108487] [center_qr]: custom_interfaces.msg.QrPos(offset=0.4895628035068512, qrcode='c')
+[qr_center_node-10] [INFO] [1732895051.715687426] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895052.191824962] [center_qr]: custom_interfaces.msg.QrPos(offset=0.4921905338764191, qrcode='c')
+[qr_center_node-10] [INFO] [1732895052.212360025] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895052.697583678] [center_qr]: custom_interfaces.msg.QrPos(offset=0.48269237875938414, qrcode='c')
+[qr_center_node-10] [INFO] [1732895052.749327034] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895053.203301542] [center_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[qr_center_node-10] [INFO] [1732895053.216955837] [center_qr]: offset: 0.00875002145767212
+[qr_center_node-10] [INFO] [1732895053.262348718] [center_qr]: links 5.0
+[qr_center_node-10] [INFO] [1732895053.776141764] [center_qr]: custom_interfaces.msg.QrPos(offset=0.44346028566360474, qrcode='c')
+[qr_center_node-10] [INFO] [1732895053.833557067] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895054.287818572] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.5237113952636718, qrcode='r')
+[qr_center_node-10] [INFO] [1732895054.311772621] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895054.684122873] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.5596930503845214, qrcode='r')
+[qr_center_node-10] [INFO] [1732895054.703396485] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895055.188906191] [center_qr]: custom_interfaces.msg.QrPos(offset=0.34140625, qrcode='c')
+[qr_center_node-10] [INFO] [1732895055.197450906] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895055.696544945] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.6251262426376343, qrcode='r')
+[qr_center_node-10] [INFO] [1732895055.713583153] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895056.198756788] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.6659036636352539, qrcode='r')
+[qr_center_node-10] [INFO] [1732895056.218635098] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895057.042363699] [center_qr]: custom_interfaces.msg.QrPos(offset=0.239249324798584, qrcode='c')
+[qr_center_node-10] [INFO] [1732895057.108018997] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895057.510817273] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.7282168865203857, qrcode='r')
+[qr_center_node-10] [INFO] [1732895057.545628903] [center_qr]: links
+[qr_center_node-10] [INFO] [1732895058.109266270] [center_qr]: custom_interfaces.msg.QrPos(offset=0.183876371383667, qrcode='c')
+[qr_center_node-10] [INFO] [1732895058.188512808] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895058.764221412] [center_qr]: custom_interfaces.msg.QrPos(offset=0.15143282413482667, qrcode='c')
+[qr_center_node-10] [INFO] [1732895058.782558755] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895059.315954431] [center_qr]: custom_interfaces.msg.QrPos(offset=0.12135602235794067, qrcode='c')
+[qr_center_node-10] [INFO] [1732895059.382804754] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895059.896497156] [center_qr]: custom_interfaces.msg.QrPos(offset=0.06506519317626953, qrcode='c')
+[qr_center_node-10] [INFO] [1732895059.929575469] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895060.366344365] [center_qr]: custom_interfaces.msg.QrPos(offset=0.06316707134246827, qrcode='c')
+[qr_center_node-10] [INFO] [1732895060.385710143] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895060.906024240] [center_qr]: custom_interfaces.msg.QrPos(offset=0.013402056694030762, qrcode='c')
+[qr_center_node-10] [INFO] [1732895060.914853989] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895061.409111799] [center_qr]: custom_interfaces.msg.QrPos(offset=0.0, qrcode='')
+[qr_center_node-10] [INFO] [1732895061.417069038] [center_qr]: offset: 0.009249985218048096
+[qr_center_node-10] [INFO] [1732895061.437568675] [center_qr]: links 1.0
+[qr_center_node-10] [INFO] [1732895061.986008207] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.013908576965332032, qrcode='c')
+[qr_center_node-10] [INFO] [1732895062.034083377] [center_qr]: links langsam
+[qr_center_node-10] [INFO] [1732895062.501391667] [center_qr]: custom_interfaces.msg.QrPos(offset=0.8439215986989439, qrcode='l')
+[qr_center_node-10] [INFO] [1732895062.567681922] [center_qr]: rechts
+[qr_center_node-10] [INFO] [1732895063.083869763] [center_qr]: custom_interfaces.msg.QrPos(offset=-0.0326570987701416, qrcode='c')
+[docking_manager_node-12] [INFO] [1732895063.110789654] [docking_manager]: qr_center success
+[docking_manager_node-12] [INFO] [1732895063.144839606] [docking_manager]: starting docking
+[final_docking_node-11] [INFO] [1732895064.095984603] [final_dock]: 0.26350000500679016
+[final_docking_node-11] [INFO] [1732895064.121654635] [final_dock]: 0.26350000500679016
+[final_docking_node-11] [INFO] [1732895064.182220593] [final_dock]: 0.26350000500679016
+[final_docking_node-11] [INFO] [1732895064.267219780] [final_dock]: 0.2642500102519989
+[final_docking_node-11] [INFO] [1732895064.361074216] [final_dock]: 0.26249998807907104
+[final_docking_node-11] [INFO] [1732895064.459510515] [final_dock]: 0.2627499997615814
+[final_docking_node-11] [INFO] [1732895064.568454196] [final_dock]: 0.2607499957084656
+[final_docking_node-11] [INFO] [1732895064.670071169] [final_dock]: 0.25975000858306885
+[final_docking_node-11] [INFO] [1732895064.810190162] [final_dock]: 0.2567499876022339
+[final_docking_node-11] [INFO] [1732895064.904899053] [final_dock]: 0.2567499876022339
+[final_docking_node-11] [INFO] [1732895064.969903135] [final_dock]: 0.25450000166893005
+[final_docking_node-11] [INFO] [1732895065.070422692] [final_dock]: 0.2524999976158142
+[final_docking_node-11] [INFO] [1732895065.170004777] [final_dock]: 0.25099998712539673
+[final_docking_node-11] [INFO] [1732895065.272939071] [final_dock]: 0.25049999356269836
+[final_docking_node-11] [INFO] [1732895065.388930610] [final_dock]: 0.25099998712539673
+[final_docking_node-11] [INFO] [1732895065.469436043] [final_dock]: 0.24824999272823334
+[final_docking_node-11] [INFO] [1732895065.563621921] [final_dock]: 0.24674999713897705
+[final_docking_node-11] [INFO] [1732895065.675239724] [final_dock]: 0.24449999630451202
+[final_docking_node-11] [INFO] [1732895065.787225301] [final_dock]: 0.24400000274181366
+[final_docking_node-11] [INFO] [1732895065.870411506] [final_dock]: 0.24250000715255737
+[final_docking_node-11] [INFO] [1732895065.976344678] [final_dock]: 0.24275000393390656
+[final_docking_node-11] [INFO] [1732895066.077316157] [final_dock]: 0.24150000512599945
+[final_docking_node-11] [INFO] [1732895066.173697754] [final_dock]: 0.23800000548362732
+[final_docking_node-11] [INFO] [1732895066.265563820] [final_dock]: 0.23800000548362732
+[final_docking_node-11] [INFO] [1732895066.380335574] [final_dock]: 0.23600000143051147
+[final_docking_node-11] [INFO] [1732895066.476231917] [final_dock]: 0.23524999618530273
+[final_docking_node-11] [INFO] [1732895066.590032477] [final_dock]: 0.23250000178813934
+[final_docking_node-11] [INFO] [1732895066.687003624] [final_dock]: 0.23250000178813934
+[final_docking_node-11] [INFO] [1732895066.782727597] [final_dock]: 0.2304999977350235
+[final_docking_node-11] [INFO] [1732895066.883674688] [final_dock]: 0.2290000021457672
+[final_docking_node-11] [INFO] [1732895066.968950187] [final_dock]: 0.2280000001192093
+[final_docking_node-11] [INFO] [1732895067.069808112] [final_dock]: 0.226500004529953
+[final_docking_node-11] [INFO] [1732895067.184665625] [final_dock]: 0.22450000047683716
+[final_docking_node-11] [INFO] [1732895067.295513083] [final_dock]: 0.2214999943971634
+[final_docking_node-11] [INFO] [1732895067.438425162] [final_dock]: 0.22200000286102295
+[final_docking_node-11] [INFO] [1732895067.481559286] [final_dock]: 0.2202499955892563
+[final_docking_node-11] [INFO] [1732895067.572230790] [final_dock]: 0.21850000321865082
+[final_docking_node-11] [INFO] [1732895067.670659608] [final_dock]: 0.21799999475479126
+[final_docking_node-11] [INFO] [1732895067.769981195] [final_dock]: 0.21649999916553497
+[final_docking_node-11] [INFO] [1732895067.881190965] [final_dock]: 0.21574999392032623
+[final_docking_node-11] [INFO] [1732895067.974289872] [final_dock]: 0.2134999930858612
+[final_docking_node-11] [INFO] [1732895068.083167849] [final_dock]: 0.2122499942779541
+[final_docking_node-11] [INFO] [1732895068.166811364] [final_dock]: 0.21150000393390656
+[final_docking_node-11] [INFO] [1732895068.270190858] [final_dock]: 0.2094999998807907
+[final_docking_node-11] [INFO] [1732895068.367117986] [final_dock]: 0.20800000429153442
+[final_docking_node-11] [INFO] [1732895068.468629812] [final_dock]: 0.20900000631809235
+[final_docking_node-11] [INFO] [1732895068.566498525] [final_dock]: 0.20350000262260437
+[final_docking_node-11] [INFO] [1732895068.673086821] [final_dock]: 0.20399999618530273
+[final_docking_node-11] [INFO] [1732895068.769294475] [final_dock]: 0.20200000703334808
+[final_docking_node-11] [INFO] [1732895068.870070419] [final_dock]: 0.20149999856948853
+[final_docking_node-11] [INFO] [1732895068.986460121] [final_dock]: 0.20000000298023224
+[final_docking_node-11] [INFO] [1732895069.063688179] [final_dock]: 0.2004999965429306
+[final_docking_node-11] [INFO] [1732895069.159999906] [final_dock]: 0.1965000033378601
+[final_docking_node-11] [INFO] [1732895069.260005284] [final_dock]: 0.19550000131130219
+[final_docking_node-11] [INFO] [1732895069.379385754] [final_dock]: 0.19550000131130219
+[final_docking_node-11] [INFO] [1732895069.469792204] [final_dock]: 0.1927500069141388
+[final_docking_node-11] [INFO] [1732895069.570140282] [final_dock]: 0.19200000166893005
+[final_docking_node-11] [INFO] [1732895069.661171745] [final_dock]: 0.1899999976158142
+[final_docking_node-11] [INFO] [1732895069.779507484] [final_dock]: 0.1899999976158142
+[final_docking_node-11] [INFO] [1732895069.861300406] [final_dock]: 0.18674999475479126
+[final_docking_node-11] [INFO] [1732895069.975529666] [final_dock]: 0.18950000405311584
+[final_docking_node-11] [INFO] [1732895070.077557950] [final_dock]: 0.1887499988079071
+[final_docking_node-11] [INFO] [1732895070.174843501] [final_dock]: 0.18674999475479126
+[final_docking_node-11] [INFO] [1732895070.265161656] [final_dock]: 0.18649999797344208
+[final_docking_node-11] [INFO] [1732895070.364402856] [final_dock]: 0.1860000044107437
+[final_docking_node-11] [INFO] [1732895070.481699957] [final_dock]: 0.18700000643730164
+[final_docking_node-11] [INFO] [1732895070.569392470] [final_dock]: 0.1862500011920929
+[final_docking_node-11] [INFO] [1732895070.668056268] [final_dock]: 0.18549999594688416
+[final_docking_node-11] [INFO] [1732895070.764107146] [final_dock]: 0.18549999594688416
+[final_docking_node-11] [INFO] [1732895070.875509470] [final_dock]: 0.18649999797344208
+[final_docking_node-11] [INFO] [1732895070.976822057] [final_dock]: 0.1862500011920929
+[final_docking_node-11] [INFO] [1732895071.092591691] [final_dock]: 0.1850000023841858
+[final_docking_node-11] [INFO] [1732895071.167260570] [final_dock]: 0.18400000035762787
+[final_docking_node-11] [INFO] [1732895071.281097686] [final_dock]: 0.18400000035762787
+[final_docking_node-11] [INFO] [1732895071.372308129] [final_dock]: 0.18424999713897705
+[final_docking_node-11] [INFO] [1732895071.465112520] [final_dock]: 0.18250000476837158
+[final_docking_node-11] [INFO] [1732895071.577058672] [final_dock]: 0.18125000596046448
+[final_docking_node-11] [INFO] [1732895071.676875588] [final_dock]: 0.18275000154972076
+[final_docking_node-11] [INFO] [1732895071.787991452] [final_dock]: 0.1809999942779541
+[final_docking_node-11] [INFO] [1732895071.876650141] [final_dock]: 0.1809999942779541
+[final_docking_node-11] [INFO] [1732895071.984479944] [final_dock]: 0.17550000548362732
+[final_docking_node-11] [INFO] [1732895072.074896784] [final_dock]: 0.17100000381469727
+[final_docking_node-11] [INFO] [1732895072.169505546] [final_dock]: 0.17000000178813934
+[final_docking_node-11] [INFO] [1732895072.272178324] [final_dock]: 0.164000004529953
+[final_docking_node-11] [INFO] [1732895072.363663783] [final_dock]: 0.1599999964237213
+[final_docking_node-11] [INFO] [1732895072.384979894] [final_dock]: docking success
+[docking_manager_node-12] [INFO] [1732895072.445845682] [docking_manager]: final_docking success
+[docking_manager_node-12] [INFO] [1732895072.486032947] [docking_manager]: docking time succses 62.27321910858154
+[qr_scan_node-7] [INFO] [1732895073.602281630] [qr_scan]: qr scan avg hz: 1.8806569809506006

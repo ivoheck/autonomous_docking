@@ -45,10 +45,6 @@ class FindQr(Node):
 
         self.node_state = False
 
-        if __name__ == '__main__':
-            self.start_node()
-            self.dock_time = time.time()
-
     def listener_callback_manage_node_state(self, msg):
         if msg.trigger:
             self.start_node()
@@ -108,24 +104,24 @@ class FindQr(Node):
             return
 
 
-        self.get_logger().info(str(msg))
+        self.get_logger().debug(str(msg))
         if msg.qrcode == '':
             #Kein QR-Code in aktueller Iteration gefunden
 
             if self.last_offset is None:
                 #Wenn noch nie ein Code gefunden wurde, wird im Uhrzeigersinn gedreht
                 self.controller.turn_left(20.0)
-                self.get_logger().info('turn left')
+                self.get_logger().debug('turn left')
                 return
 
             if self.last_offset > 0.0:
                 self.controller.turn_left(5.0)
-                self.get_logger().info('turn left slow (last_offset)')
+                self.get_logger().debug('turn left slow (last_offset)')
                 return
 
             if self.last_offset < 0.0:
                 self.controller.turn_right(5.0)
-                self.get_logger().info('turn right slow (last_offset)')
+                self.get_logger().debug('turn right slow (last_offset)')
                 return
 
             return
@@ -151,11 +147,11 @@ class FindQr(Node):
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_left(5.0)
-                self.get_logger().info('turn left slow')
+                self.get_logger().debug('turn left slow')
                 return
             else:
                 self.controller.turn_left(10.0)
-                self.get_logger().info('turn left')
+                self.get_logger().debug('turn left')
                 return
 
         elif msg.offset <= 0.0:
@@ -176,11 +172,11 @@ class FindQr(Node):
 
             elif abs(msg.offset) < 0.6:
                 self.controller.turn_right(5.0)
-                self.get_logger().info('turn right slow')
+                self.get_logger().debug('turn right slow')
                 return
             else:
                 self.controller.turn_right(10.0)
-                self.get_logger().info('turn right')
+                self.get_logger().debug('turn right')
                 return
     
 

@@ -53,7 +53,7 @@ class MotorController(Node):
 
         c = 0.291
 
-        # mit w als m/s
+        # räder als m/s
         v_x = (1/4) * (front_left + front_right + back_left + back_right)
         v_y = (1/4) * (-front_left + front_right + back_left - back_right)
         v_z = (1/(4*c)) * (-front_left + front_right - back_left + back_right)

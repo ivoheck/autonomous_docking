@@ -15,8 +15,8 @@ global_planer:
     ws_1:
       docking: True
       pose:
-        x: 0.01
-        y: -4.03
+        x: -0.21
+        y: -4.23
       orientation:
         x: 0.0
         y: 0.0

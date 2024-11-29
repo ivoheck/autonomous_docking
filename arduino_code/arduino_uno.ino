@@ -1,6 +1,5 @@
-
-
 int lock_controll = 4;
+
 
 void setup() {
   Serial.begin(9600);
