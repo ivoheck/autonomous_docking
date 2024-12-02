@@ -142,11 +142,11 @@ class FinalDocking(Node):
             self.open_lock()
             self.controller.front(percent=30.0)
 
-        elif lidar_front >= 0.162: 
+        elif lidar_front >= 0.164: 
             self.controller.front(percent=100.0)
 
         #Docking erfolgreich
-        elif lidar_front < 0.162:
+        elif lidar_front < 0.164:
             self.get_logger().info('docking success')
             self.close_lock()
             self.controller.stop()

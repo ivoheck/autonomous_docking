@@ -41,13 +41,6 @@ class GlobalPlaner(Node):
             self.callback_current_ws,
             1)
         self.subscription_current_ws
-        
-        self.subscription_current_pos = self.create_subscription(
-            Odometry,
-            '/odom',
-            self.callback_current_pos,
-            1)
-        self.subscription_current_pos
 
         #Publisher
         self.publisher_start_docking = self.create_publisher(DockTrigger, '/start_dock', 1)
@@ -63,7 +56,6 @@ class GlobalPlaner(Node):
         init_pose.pose.orientation.y = 0.0
         init_pose.pose.orientation.z = 0.0
         init_pose.pose.orientation.w = 1.0
-        self.current_pose = init_pose
         
         self.nav = BasicNavigator()
         self.nav.setInitialPose(init_pose)
@@ -223,9 +215,6 @@ class GlobalPlaner(Node):
     def callback_dock_goal(self,msg):
         self.current_nav_goal = msg.data     
         self.current_dock_goal = msg.data     
-
-    def callback_current_pos(self,msg):
-        self.current_pose = msg
         
     def callback_current_state(self,msg):
         self.current_state = msg.data

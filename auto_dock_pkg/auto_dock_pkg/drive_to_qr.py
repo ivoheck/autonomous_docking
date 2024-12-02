@@ -138,7 +138,7 @@ class DriveToQr(Node):
             self.get_logger().debug('front')
         else:
             #Roboter beginnt sofort geradeaus zu fahren
-            self.controller.debug(5.0)
+            self.controller.front(5.0)
             self.get_logger().debug('front langsam')
 
 
