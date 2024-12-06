@@ -26,7 +26,7 @@ setup(
             f'odometry_publisher_node = {package_name}.odometry:main',
             f'motor_controller_node = {package_name}.motor_controller:main',
             f'lock_controller_node = {package_name}.lock_controller:main',
-            f'lidar_fillter_node = {package_name}.lidar_fillter:main',
+            f'lidar_filter_node = {package_name}.lidar_filter:main',
         ],
     },
 )

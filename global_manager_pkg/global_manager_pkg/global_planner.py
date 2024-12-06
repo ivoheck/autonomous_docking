@@ -17,9 +17,9 @@ from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 
 #current_state: navigation, docking, undocking, waiting, docking_fail
 
-class GlobalPlaner(Node):
+class GlobalPlanner(Node):
     def __init__(self):
-        super().__init__('global_planer')
+        super().__init__('global_planner')
         #Subcriber
         self.subscription_dock_goal = self.create_subscription(
             String,
@@ -226,11 +226,11 @@ class GlobalPlaner(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    global_planer = GlobalPlaner()
+    global_planner = GlobalPlanner()
 
-    rclpy.spin(global_planer)
+    rclpy.spin(global_planner)
     
-    global_planer.destroy_node()
+    global_planner.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

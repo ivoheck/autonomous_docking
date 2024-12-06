@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', [
-            'launch/global_planer_launch.py',
+            'launch/global_planner_launch.py',
             'launch/global_navigation_launch.py', 
         ]),
         ('share/' + package_name + '/config', ['config/workplace.yaml']),
@@ -26,7 +26,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            f'global_planer_node = {package_name}.global_planer:main',
+            f'global_planner_node = {package_name}.global_planner:main',
             f'nav2_start_node = {package_name}.nav2_start:main',
             f'path_follower_node = {package_name}.path_follower:main'
         ],

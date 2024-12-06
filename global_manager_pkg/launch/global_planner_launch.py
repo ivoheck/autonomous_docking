@@ -14,12 +14,12 @@ def generate_launch_description():
         'workplace.yaml'
         )
     
-    global_planer_node = Node(
+    global_planner_node = Node(
        package='global_manager_pkg',
-       executable='global_planer_node',
+       executable='global_planner_node',
        parameters = [config] 
     )
 
     return LaunchDescription([
-        global_planer_node,
+        global_planner_node,
     ])
